@@ -19,12 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Este proyecto incluye binarios de FFmpeg (ffmpeg-static y ffprobe-static),
-distribuidos bajo sus propias licencias: LGPL v2.1+ / GPL v2+ segun la
-compilacion. FFmpeg es un proyecto independiente; vease https://ffmpeg.org
-
-Left 4 Dead 2, Source Engine y Valve son marcas de Valve Corporation.
-Este proyecto no esta afiliado ni respaldado por Valve Corporation.

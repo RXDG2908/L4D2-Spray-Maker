@@ -168,6 +168,6 @@ npm run build        # genera el instalador en dist/
 
 MIT — ver [LICENSE](LICENSE). Copyright (c) 2026 RXDG2908.
 
-Incluye binarios de FFmpeg bajo sus propias licencias (LGPL/GPL).
-Left 4 Dead 2 y Valve son marcas de Valve Corporation; este proyecto no esta
-afiliado ni respaldado por Valve.
+Los avisos de terceros (FFmpeg, Electron, vtf-js y marcas de Valve) estan en
+[NOTICE.md](NOTICE.md). Este proyecto no esta afiliado ni respaldado por Valve
+Corporation.
