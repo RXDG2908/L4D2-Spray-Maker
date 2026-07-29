@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>L4D2 Spray Maker</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="update-bar" class="update-bar" hidden>
+    <span id="update-text"></span>
+    <div class="update-actions">
+      <button type="button" id="update-action" class="mini-btn" hidden></button>
+      <button type="button" id="update-dismiss" class="update-close" title="X">&times;</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <div class="header-row">
+        <h1 data-i18n="app.title">L4D2 Spray Maker</h1>
+        <select id="lang-select" class="lang-select" aria-label="Idioma / Language">
+          <option value="es">Español</option>
+          <option value="en">English</option>
+        </select>
+      </div>
+      <p class="subtitle" data-i18n="app.subtitle"></p>
+    </header>
+
+    <div id="steam-box" class="steam-box searching">
+      <span id="steam-text" data-i18n="steam.searching"></span>
+      <code id="steam-path" hidden></code>
+    </div>
+
+    <div class="mode-toggle">
+      <button type="button" class="mode-btn active" data-mode="image" data-i18n="mode.image"></button>
+      <button type="button" class="mode-btn" data-mode="video" data-i18n="mode.video"></button>
+    </div>
+
+    <div id="dropzone" class="dropzone">
+      <input type="file" id="file-input" hidden />
+      <div id="dropzone-empty" class="dropzone-empty">
+        <p id="dropzone-label" data-i18n="drop.image"></p>
+      </div>
+      <div id="preview-wrap" class="preview-wrap" hidden>
+        <img id="preview-img" alt="" hidden />
+        <video id="preview-video" muted loop autoplay playsinline hidden></video>
+        <button type="button" id="clear-file" class="clear-btn" title="X">&times;</button>
+      </div>
+    </div>
+
+    <section id="frames-section" class="frames-section" hidden>
+      <h2 data-i18n="frames.title"></h2>
+      <p class="hint" id="frames-help"></p>
+      <div class="frames-toolbar">
+        <span id="frames-counter" class="frames-counter"></span>
+        <div class="frames-actions">
+          <button type="button" id="frames-auto" class="mini-btn"></button>
+          <button type="button" id="frames-clear" class="mini-btn"></button>
+        </div>
+      </div>
+      <div id="frames-grid" class="frames-grid"></div>
+    </section>
+
+    <section id="crop-section" class="crop-section" hidden>
+      <div class="preview-head">
+        <h2 data-i18n="crop.title"></h2>
+        <div class="crop-controls">
+          <select id="aspect-select" class="mini-select"></select>
+          <button type="button" id="crop-reset" class="mini-btn" data-i18n="crop.reset"></button>
+        </div>
+      </div>
+      <p class="hint" id="crop-help" data-i18n="crop.help"></p>
+      <div id="crop-area"></div>
+      <p class="hint" id="crop-info"></p>
+    </section>
+
+    <section id="spray-preview" class="spray-preview" hidden>
+      <div class="preview-head">
+        <h2 data-i18n="preview.title"></h2>
+        <div class="preview-bg-toggle" id="preview-bg-toggle">
+          <button type="button" class="bg-btn active" data-bg="wall" data-i18n="preview.bg.wall"></button>
+          <button type="button" class="bg-btn" data-bg="dark" data-i18n="preview.bg.dark"></button>
+          <button type="button" class="bg-btn" data-bg="checker" data-i18n="preview.bg.checker"></button>
+        </div>
+      </div>
+      <div class="preview-stage" id="preview-stage">
+        <canvas id="preview-canvas" width="256" height="256"></canvas>
+      </div>
+      <p class="hint" id="preview-info"></p>
+    </section>
+
+    <section class="options">
+      <label class="field">
+        <span data-i18n="field.name"></span>
+        <input type="text" id="name" data-i18n-placeholder="field.name.placeholder" maxlength="40" />
+      </label>
+
+      <div class="field-row">
+        <label class="field">
+          <span id="size-label" data-i18n="field.size"></span>
+          <select id="size"></select>
+        </label>
+
+        <label class="field">
+          <span data-i18n="field.quality"></span>
+          <select id="quality">
+            <option value="uncompressed" data-i18n="quality.uncompressed"></option>
+            <option value="dxt5" data-i18n="quality.dxt5"></option>
+            <option value="dxt1" data-i18n="quality.dxt1"></option>
+          </select>
+        </label>
+      </div>
+
+      <p class="hint engine-note" id="fps-field" hidden data-i18n="field.fpsFixed"></p>
+
+      <div id="size-estimate" class="size-estimate"></div>
+    </section>
+
+    <div class="actions">
+      <button type="button" id="download-btn" class="btn btn-secondary" disabled data-i18n="action.download"></button>
+      <button type="button" id="install-btn" class="btn btn-primary" disabled data-i18n="action.install"></button>
+    </div>
+
+    <div id="status" class="status" hidden></div>
+
+    <footer class="footer">
+      <span>L4D2 Spray Maker <span id="app-version"></span></span>
+      <span>&copy; 2026 RXDG2908 &middot; MIT</span>
+    </footer>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
