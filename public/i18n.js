@@ -56,9 +56,17 @@ const TRANSLATIONS = {
     'action.installing': 'Instalando...',
     'action.generating': 'Generando spray...',
 
-    'steam.detected': 'Left 4 Dead 2 detectado en:',
-    'steam.notFound': 'No se encontró Left 4 Dead 2 instalado. Puedes descargar el .vtf e instalarlo a mano.',
+    'steam.detected': 'Left 4 Dead 2 encontrado en:',
+    'steam.detectedManual': 'Carpeta del juego elegida por ti:',
+    'steam.notFound': 'No se encontró Left 4 Dead 2.',
     'steam.searching': 'Buscando la instalación del juego...',
+    'steam.auto': 'Buscar automáticamente',
+    'steam.manual': 'Localizar manualmente',
+    'steam.manual.placeholder': 'C:\...\steamapps\common\Left 4 Dead 2',
+    'steam.manual.save': 'Usar esta carpeta',
+    'steam.manual.hint': 'Elige la carpeta "Left 4 Dead 2" del juego. La app creará dentro la carpeta sprays si no existe, y si ya existe la respetará.',
+    'steam.saved': 'Carpeta del juego guardada. Ya puedes instalar sprays.',
+    'steam.autoFailed': 'La búsqueda automática no encontró el juego. Usa "Localizar manualmente".',
 
     'status.downloaded': 'Se descargó el .vtf. Cópialo a materials/vgui/logos/custom/ dentro del juego.',
     'status.installed': 'Instalado en el juego.',
@@ -78,6 +86,7 @@ const TRANSLATIONS = {
     'error.SESSION_EXPIRED': 'La sesión expiró. Vuelve a subir el archivo.',
     'error.TOO_FEW_FRAMES': 'Elige al menos 2 frames.',
     'error.GAME_NOT_FOUND': 'No se encontró la instalación de Left 4 Dead 2.',
+    'error.INVALID_GAME_PATH': 'Esa carpeta no parece una instalación de Left 4 Dead 2.',
     'error.UNKNOWN': 'Ocurrió un error inesperado.',
 
     'update.available': 'Hay una versión nueva disponible ({version}).',
@@ -85,6 +94,12 @@ const TRANSLATIONS = {
     'update.downloading': 'Descargando la actualización... {percent}%',
     'update.ready': 'La versión {version} está lista para instalarse.',
     'update.restart': 'Reiniciar e instalar',
+    'update.check': 'Buscar actualizaciones',
+    'update.checking': 'Buscando actualizaciones...',
+    'update.upToDate': 'Ya tienes la última versión.',
+    'update.failed': 'No se pudo comprobar si hay actualizaciones. Revisa tu conexión.',
+    'update.devMode': 'Las actualizaciones solo funcionan en la app instalada.',
+    'update.onlyDesktop': 'Las actualizaciones solo funcionan en la app de escritorio.',
   },
 
   en: {
@@ -145,8 +160,16 @@ const TRANSLATIONS = {
     'action.generating': 'Generating spray...',
 
     'steam.detected': 'Left 4 Dead 2 found at:',
-    'steam.notFound': 'Left 4 Dead 2 was not found. You can download the .vtf and install it manually.',
+    'steam.detectedManual': 'Game folder you selected:',
+    'steam.notFound': 'Left 4 Dead 2 was not found.',
     'steam.searching': 'Looking for the game installation...',
+    'steam.auto': 'Detect automatically',
+    'steam.manual': 'Locate manually',
+    'steam.manual.placeholder': 'C:\...\steamapps\common\Left 4 Dead 2',
+    'steam.manual.save': 'Use this folder',
+    'steam.manual.hint': 'Pick the game folder named "Left 4 Dead 2". The app will create the sprays folder inside if missing, and keep it if it already exists.',
+    'steam.saved': 'Game folder saved. You can install sprays now.',
+    'steam.autoFailed': 'Automatic detection did not find the game. Use "Locate manually".',
 
     'status.downloaded': 'The .vtf was downloaded. Copy it into materials/vgui/logos/custom/ in the game.',
     'status.installed': 'Installed into the game.',
@@ -166,6 +189,7 @@ const TRANSLATIONS = {
     'error.SESSION_EXPIRED': 'Your session expired. Please upload the file again.',
     'error.TOO_FEW_FRAMES': 'Pick at least 2 frames.',
     'error.GAME_NOT_FOUND': 'Left 4 Dead 2 installation was not found.',
+    'error.INVALID_GAME_PATH': 'That folder does not look like a Left 4 Dead 2 installation.',
     'error.UNKNOWN': 'An unexpected error occurred.',
 
     'update.available': 'A new version is available ({version}).',
@@ -173,6 +197,12 @@ const TRANSLATIONS = {
     'update.downloading': 'Downloading the update... {percent}%',
     'update.ready': 'Version {version} is ready to install.',
     'update.restart': 'Restart and install',
+    'update.check': 'Check for updates',
+    'update.checking': 'Checking for updates...',
+    'update.upToDate': 'You already have the latest version.',
+    'update.failed': 'Could not check for updates. Check your connection.',
+    'update.devMode': 'Updates only work in the installed app.',
+    'update.onlyDesktop': 'Updates only work in the desktop app.',
   },
 };
 

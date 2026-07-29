@@ -515,3 +515,36 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   font-size: 0.78rem;
   color: var(--muted);
 }
+
+/* ------------------------------------------------------ localizar juego --- */
+
+.steam-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.steam-actions { display: flex; gap: 6px; }
+
+.steam-manual-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.steam-manual-form input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel-2);
+  color: var(--text);
+  font-size: 0.85rem;
+}
+
+.steam-box .hint { margin-top: 8px; }
+
+.footer-right { display: flex; align-items: center; gap: 12px; }

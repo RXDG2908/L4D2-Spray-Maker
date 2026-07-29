@@ -11,7 +11,7 @@ import {
 import { buildVtf, cropRgba } from './vtfBuilder.js';
 import { buildVmt, buildUiVmt, buildLogoCommand, ENGINE_SPRAY_FPS } from './vmtBuilder.js';
 import { encodeTga32 } from './tgaEncoder.js';
-import { locateL4D2 } from './steamLocator.js';
+import { locateL4D2, setGamePath, clearGamePath } from './steamLocator.js';
 import { createSession, getSession, destroySession } from './sessionStore.js';
 
 const upload = multer({
@@ -75,6 +75,61 @@ router.get('/api/steam', async (_req, res) => {
   } catch (err) {
     console.error(err);
     res.json({ found: false });
+  }
+});
+
+/** Guarda la carpeta del juego elegida a mano. */
+router.post('/api/steam/locate', express.json(), (req, res) => {
+  const result = setGamePath(req.body?.path);
+  if (!result.ok) {
+    return fail(res, 400, 'INVALID_GAME_PATH',
+      'Esa carpeta no parece una instalacion de Left 4 Dead 2.');
+  }
+  res.json(result);
+});
+
+/** Vuelve a la deteccion automatica. */
+router.post('/api/steam/auto', async (_req, res, next) => {
+  try {
+    clearGamePath();
+    res.json(await locateL4D2());
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * Nombres de sprays ya instalados, para que la interfaz proponga uno libre
+ * y no pise el trabajo anterior del usuario.
+ */
+router.get('/api/sprays', async (_req, res) => {
+  try {
+    const location = await locateL4D2();
+    if (!location.found) return res.json({ names: [] });
+
+    const names = new Set();
+    const folders = [
+      path.join(location.logosDir, SPRAY_FOLDER),
+      location.spraysDir,
+    ];
+
+    for (const dir of folders) {
+      try {
+        for (const entry of await readdir(dir)) {
+          const ext = path.extname(entry).toLowerCase();
+          if (['.vtf', '.vmt', '.tga', '.bmp', '.jpg', '.png'].includes(ext)) {
+            names.add(path.basename(entry, path.extname(entry)).toLowerCase());
+          }
+        }
+      } catch {
+        // La carpeta puede no existir todavia; no es un error.
+      }
+    }
+
+    res.json({ names: [...names] });
+  } catch (err) {
+    console.error(err);
+    res.json({ names: [] });
   }
 });
 

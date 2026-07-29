@@ -2,6 +2,7 @@ import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { getManualGamePath, setManualGamePath } from './config.js';
 
 const L4D2_APPID = '550';
 
@@ -49,8 +50,7 @@ async function readLibraryFolders(steamRoot) {
 
   try {
     const text = await readFile(vdfPath, 'utf8');
-    const matches = text.matchAll(/"path"\s+"([^"]+)"/g);
-    for (const m of matches) {
+    for (const m of text.matchAll(/"path"\s+"([^"]+)"/g)) {
       const libPath = path.normalize(m[1].replace(/\\\\/g, '\\'));
       if (!libs.includes(libPath)) libs.push(libPath);
     }
@@ -67,7 +67,8 @@ async function readLibraryFolders(steamRoot) {
  * datos del usuario (materials, cfg, addons), que a simple vista parecen una
  * instalacion valida. Solo la de verdad tiene el ejecutable y los VPK.
  */
-function isRealInstall(gameRoot) {
+export function isRealInstall(gameRoot) {
+  if (!gameRoot) return false;
   const gameData = path.join(gameRoot, 'left4dead2');
   return (
     existsSync(path.join(gameData, 'gameinfo.txt')) &&
@@ -76,13 +77,52 @@ function isRealInstall(gameRoot) {
   );
 }
 
+function describe(gameRoot, source, steamRoot = null) {
+  const gameData = path.join(gameRoot, 'left4dead2');
+  return {
+    found: true,
+    source,
+    steamRoot,
+    gameRoot,
+    gameDataDir: gameData,
+    spraysDir: path.join(gameData, 'sprays'),
+    logosDir: path.join(gameData, 'materials', 'vgui', 'logos'),
+  };
+}
+
+/**
+ * Acepta que el usuario apunte a cualquiera de las carpetas habituales y
+ * deduce la raiz del juego: la carpeta "Left 4 Dead 2", la de datos
+ * "left4dead2", o incluso "left4dead2/sprays".
+ */
+export function normalizeGameRoot(candidate) {
+  if (!candidate) return null;
+  const clean = path.normalize(candidate.replace(/["']/g, '').trim());
+
+  const attempts = [
+    clean,                                  // .../Left 4 Dead 2
+    path.dirname(clean),                    // .../left4dead2  -> sube uno
+    path.dirname(path.dirname(clean)),      // .../left4dead2/sprays -> sube dos
+  ];
+
+  for (const attempt of attempts) {
+    if (isRealInstall(attempt)) return attempt;
+  }
+  return null;
+}
+
 /**
  * Localiza la instalacion de Left 4 Dead 2.
- * @returns {Promise<{found: boolean, gameRoot?: string, logosDir?: string, spraysDir?: string, steamRoot?: string}>}
+ * Da prioridad a la ruta que el usuario haya elegido a mano.
  */
 export async function locateL4D2() {
+  const manual = getManualGamePath();
+  if (manual && isRealInstall(manual)) {
+    return describe(manual, 'manual');
+  }
+
   const steamRoot = await findSteamRoot();
-  if (!steamRoot) return { found: false };
+  if (!steamRoot) return { found: false, source: 'auto' };
 
   const libs = await readLibraryFolders(steamRoot);
 
@@ -96,17 +136,21 @@ export async function locateL4D2() {
 
   for (const lib of ordered) {
     const gameRoot = path.join(lib, 'steamapps', 'common', 'Left 4 Dead 2');
-    if (!isRealInstall(gameRoot)) continue;
-
-    const gameData = path.join(gameRoot, 'left4dead2');
-    return {
-      found: true,
-      steamRoot,
-      gameRoot,
-      logosDir: path.join(gameData, 'materials', 'vgui', 'logos'),
-      spraysDir: path.join(gameData, 'sprays'),
-    };
+    if (isRealInstall(gameRoot)) return describe(gameRoot, 'auto', steamRoot);
   }
 
-  return { found: false, steamRoot };
+  return { found: false, source: 'auto', steamRoot };
+}
+
+/** Guarda una ruta elegida a mano, validandola antes. */
+export function setGamePath(candidate) {
+  const root = normalizeGameRoot(candidate);
+  if (!root) return { ok: false, error: 'INVALID_GAME_PATH' };
+  setManualGamePath(root);
+  return { ok: true, ...describe(root, 'manual') };
+}
+
+/** Olvida la ruta manual y vuelve a la deteccion automatica. */
+export function clearGamePath() {
+  setManualGamePath(null);
 }

@@ -58,6 +58,19 @@ export class Cropper {
     this.reset();
   }
 
+  /**
+   * Descarta la imagen actual.
+   * Hace falta al cambiar entre foto y video: si no, el recuadro sigue
+   * mostrando el archivo anterior hasta que carga el nuevo.
+   */
+  clear() {
+    this.img.onload = null;
+    this.img.onerror = null;
+    this.img.removeAttribute('src');
+    this.natural = { width: 1, height: 1 };
+    this.rect = { x: 0, y: 0, w: 1, h: 1 };
+  }
+
   /** Recuadro centrado y lo mas grande posible dentro de la imagen. */
   reset() {
     const imgAspect = this.natural.width / this.natural.height;

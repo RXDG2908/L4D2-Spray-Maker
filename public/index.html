@@ -28,8 +28,19 @@
     </header>
 
     <div id="steam-box" class="steam-box searching">
-      <span id="steam-text" data-i18n="steam.searching"></span>
+      <div class="steam-head">
+        <span id="steam-text" data-i18n="steam.searching"></span>
+        <div class="steam-actions">
+          <button type="button" id="steam-auto" class="mini-btn" hidden data-i18n="steam.auto"></button>
+          <button type="button" id="steam-manual" class="mini-btn" hidden data-i18n="steam.manual"></button>
+        </div>
+      </div>
       <code id="steam-path" hidden></code>
+      <div id="steam-manual-form" class="steam-manual-form" hidden>
+        <input type="text" id="steam-manual-input" data-i18n-placeholder="steam.manual.placeholder" />
+        <button type="button" id="steam-manual-save" class="mini-btn" data-i18n="steam.manual.save"></button>
+      </div>
+      <p class="hint" id="steam-manual-hint" hidden data-i18n="steam.manual.hint"></p>
     </div>
 
     <div class="mode-toggle">
@@ -126,7 +137,10 @@
 
     <footer class="footer">
       <span>L4D2 Spray Maker <span id="app-version"></span></span>
-      <span>&copy; 2026 RXDG2908 &middot; MIT</span>
+      <div class="footer-right">
+        <button type="button" id="check-updates" class="mini-btn" data-i18n="update.check"></button>
+        <span>&copy; 2026 RXDG2908 &middot; MIT</span>
+      </div>
     </footer>
   </div>
 

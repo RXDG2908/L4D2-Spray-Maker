@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld('sprayApp', {
   isDesktop: true,
 
   getVersion: () => ipcRenderer.invoke('app:version'),
+  pickGameFolder: () => ipcRenderer.invoke('game:pickFolder'),
+  openFolder: (target) => ipcRenderer.invoke('shell:openPath', target),
   checkForUpdates: () => ipcRenderer.invoke('update:check'),
   downloadUpdate: () => ipcRenderer.invoke('update:download'),
   installUpdate: () => ipcRenderer.invoke('update:install'),

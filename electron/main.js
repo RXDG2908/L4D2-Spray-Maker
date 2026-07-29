@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, ipcMain, shell, dialog } from 'electron';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import electronUpdater from 'electron-updater';
@@ -102,6 +102,20 @@ function setupUpdater() {
   });
 
   ipcMain.handle('app:version', () => app.getVersion());
+
+  /** Selector de carpeta nativo para localizar el juego a mano. */
+  ipcMain.handle('game:pickFolder', async () => {
+    const result = await dialog.showOpenDialog(mainWindow, {
+      title: 'Selecciona la carpeta de Left 4 Dead 2',
+      properties: ['openDirectory'],
+      buttonLabel: 'Usar esta carpeta',
+    });
+    if (result.canceled || !result.filePaths.length) return { canceled: true };
+    return { path: result.filePaths[0] };
+  });
+
+  /** Abre una carpeta en el explorador de archivos. */
+  ipcMain.handle('shell:openPath', (_event, target) => shell.openPath(target));
 }
 
 /* -------------------------------------------------------- ciclo de vida --- */

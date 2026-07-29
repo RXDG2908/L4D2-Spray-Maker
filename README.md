@@ -17,6 +17,8 @@ Ejecutalo y listo: **no hace falta instalar nada mas**, ni Node ni FFmpeg. La ap
 
 La app comprueba si hay una version nueva al abrirse. Si la hay, aparece un aviso arriba: pulsas **Actualizar ahora**, se descarga sola y con **Reiniciar e instalar** queda al dia. No hace falta saber nada de GitHub ni volver a descargar nada a mano.
 
+Tambien hay un boton **Buscar actualizaciones** abajo del todo para comprobarlo cuando quieras.
+
 ## Que hace
 
 - **Fotos** en PNG, JPG, BMP, TGA, WebP, TIFF o GIF, con recorte libre (no hace falta que sea cuadrado).
@@ -112,19 +114,32 @@ Por eso los valores por defecto son DXT1 para animados y DXT5 para estáticos. D
 
 ## Instalación en el juego
 
-El botón **Instalar en el juego** localiza Steam en el registro de Windows y lee `libraryfolders.vdf` para recorrer todas las bibliotecas. Escribe:
+### Localizar el juego
+
+Al abrirse, la app busca Left 4 Dead 2 sola. Arriba se muestra la carpeta que encontró, con dos botones:
+
+- **Buscar automáticamente** — vuelve a sondear el registro de Windows y las bibliotecas de Steam.
+- **Localizar manualmente** — abre un selector de carpetas para que elijas tú la instalación. Sirve cuando el juego está en un disco raro o Steam no lo declara.
+
+En la búsqueda manual puedes apuntar a la carpeta `Left 4 Dead 2`, a `left4dead2` o incluso a `left4dead2\sprays`: la app deduce la raíz. La elección queda guardada en tu perfil de usuario, así que sobrevive a las actualizaciones.
+
+Si la carpeta `sprays` no existe, se crea; si ya existe, se respeta y solo se escribe dentro.
+
+### Qué archivos escribe
 
 ```
+left4dead2/sprays/<nombre>.tga                        fotos: fuente para "Importar espray"
+left4dead2/sprays/<nombre>.vtf                        animados: listo para "Logotipo personalizado"
 left4dead2/materials/vgui/logos/custom/<nombre>.vtf   el spray
 left4dead2/materials/vgui/logos/custom/<nombre>.vmt   su material
 left4dead2/materials/vgui/logos/UI/<nombre>.vmt       icono del menu de sprays
-left4dead2/sprays/<nombre>.tga     solo fotos: fuente para "Importar espray"
-left4dead2/sprays/<nombre>.vtf     solo animados: listo para "Logotipo personalizado"
 ```
 
-La carpeta `sprays/` se crea sola si no existe. Los animados dejan **un único .vtf** ahí, igual que VTFEdit al exportar una textura animada: los frames sueltos solo servirían para confundir el diálogo de "Importar espray", que no sabe animar.
-
 El `.vmt` de `UI/` no lleva `.vtf` propio: apunta al mismo del spray, igual que hacen los sprays originales del juego.
+
+### Nombres sin colisiones
+
+El nombre se regenera con cada archivo que cargas, y se comprueba contra los sprays que ya tienes instalados. Si `mi-spray` existe, propone `mi-spray-2`. Así no se pisa por accidente un spray anterior.
 
 Después, en la consola de desarrollador (ruta completa y con extensión):
 

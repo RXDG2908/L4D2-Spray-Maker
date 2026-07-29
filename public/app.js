@@ -215,14 +215,9 @@ async function handleFile(file) {
     previewImg.src = url;
   }
 
-  if (!nameInput.value) {
-    nameInput.value = file.name
-      .replace(/\.[^.]+$/, '')
-      .toLowerCase()
-      .replace(/[^a-z0-9_-]+/g, '-')
-      .replace(/^-+|-+$/g, '')
-      .slice(0, 40);
-  }
+  // El nombre se regenera con cada archivo: si se quedara el anterior, el
+  // siguiente spray sobrescribiria al que ya estaba instalado.
+  nameInput.value = await uniqueName(baseNameFrom(file.name));
 
   if (wantsVideo) {
     await analyzeVideo(file);
@@ -253,8 +248,15 @@ function clearFile() {
   state.selected = [];
   state.cropSource = null;
   fileInput.value = '';
-  previewImg.src = '';
-  previewVideo.src = '';
+  // removeAttribute en vez de src='': asignar cadena vacia deja la imagen rota
+  // a la vista en algunos navegadores.
+  previewImg.removeAttribute('src');
+  previewVideo.removeAttribute('src');
+  previewVideo.load();
+  previewImg.onerror = null;
+  // Sin esto, al cambiar de modo el recortador seguia mostrando el archivo
+  // anterior hasta que cargaba el nuevo.
+  cropper.clear();
   dropzoneEmpty.hidden = false;
   previewWrap.hidden = true;
   framesSection.hidden = true;
@@ -270,6 +272,43 @@ function clearFile() {
 function setButtonsEnabled(enabled) {
   downloadBtn.disabled = !enabled;
   installBtn.disabled = !enabled || !state.steam?.found;
+}
+
+
+/* ------------------------------------------------- nombre del spray --- */
+
+/** Convierte el nombre de archivo en un nombre de spray valido. */
+function baseNameFrom(filename) {
+  const base = filename
+    .replace(/\.[^.]+$/, '')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9_-]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 34);
+  return base || 'spray';
+}
+
+/**
+ * Devuelve un nombre que no pise ningun spray ya instalado.
+ * Si "mi-spray" existe, propone "mi-spray-2", "mi-spray-3", etc.
+ */
+async function uniqueName(base) {
+  let taken = new Set();
+  try {
+    const resp = await fetch('/api/sprays');
+    const data = await resp.json();
+    taken = new Set((data.names || []).map((n) => String(n).toLowerCase()));
+  } catch {
+    // Sin lista no podemos comprobar; devolvemos el nombre tal cual.
+  }
+
+  if (!taken.has(base)) return base;
+  for (let i = 2; i < 500; i++) {
+    const candidate = `${base}-${i}`;
+    if (!taken.has(candidate)) return candidate;
+  }
+  return `${base}-${Date.now().toString().slice(-5)}`;
 }
 
 /* ---------------------------------------------------------------- recorte --- */
@@ -645,36 +684,125 @@ async function downloadFile(resp) {
 downloadBtn.addEventListener('click', () => generate('download'));
 installBtn.addEventListener('click', () => generate('install'));
 
-/* ----------------------------------------------------------------- steam --- */
+/* ----------------------------------------------------------------- juego --- */
+
+const steamBox = $('steam-box');
+const steamText = $('steam-text');
+const steamPath = $('steam-path');
+const manualForm = $('steam-manual-form');
+const manualInput = $('steam-manual-input');
+
+/** Refleja en la interfaz donde quedo apuntando la app. */
+function renderGameLocation() {
+  const found = state.steam?.found;
+  steamBox.classList.remove('searching', 'found', 'missing');
+  steamBox.classList.add(found ? 'found' : 'missing');
+
+  if (found) {
+    // Mostramos la carpeta del juego, que es lo que el usuario reconoce;
+    // las subcarpetas exactas las gestiona la app.
+    steamText.textContent = t(state.steam.source === 'manual'
+      ? 'steam.detectedManual'
+      : 'steam.detected');
+    steamPath.hidden = false;
+    steamPath.textContent = state.steam.gameRoot;
+    $('steam-manual-hint').hidden = true;
+  } else {
+    steamText.textContent = t('steam.notFound');
+    steamPath.hidden = true;
+    $('steam-manual-hint').hidden = false;
+  }
+
+  $('steam-auto').hidden = false;
+  $('steam-manual').hidden = false;
+  $('steam-auto').textContent = t('steam.auto');
+  $('steam-manual').textContent = t('steam.manual');
+  setButtonsEnabled(!downloadBtn.disabled);
+}
 
 async function detectSteam() {
-  const box = $('steam-box');
-  const text = $('steam-text');
-  const pathEl = $('steam-path');
-
   try {
     const resp = await fetch('/api/steam');
     state.steam = await resp.json();
   } catch {
     state.steam = { found: false };
   }
+  renderGameLocation();
+}
 
-  box.classList.remove('searching');
-  if (state.steam.found) {
-    box.classList.add('found');
-    text.dataset.i18n = 'steam.detected';
-    text.textContent = t('steam.detected');
-    pathEl.hidden = false;
-    pathEl.textContent = state.steam.logosDir;
-  } else {
-    box.classList.add('missing');
-    text.dataset.i18n = 'steam.notFound';
-    text.textContent = t('steam.notFound');
-    pathEl.hidden = true;
+/** Vuelve a sondear, olvidando cualquier ruta elegida a mano. */
+$('steam-auto').addEventListener('click', async () => {
+  steamText.textContent = t('steam.searching');
+  manualForm.hidden = true;
+  try {
+    const resp = await fetch('/api/steam/auto', { method: 'POST' });
+    state.steam = await resp.json();
+  } catch {
+    state.steam = { found: false };
+  }
+  renderGameLocation();
+  if (!state.steam.found) showStatus(t('steam.autoFailed'), 'error');
+});
+
+/**
+ * Busqueda manual. En la app de escritorio abre el selector de carpetas
+ * nativo; en el navegador no existe esa posibilidad, asi que se escribe
+ * la ruta a mano.
+ */
+$('steam-manual').addEventListener('click', async () => {
+  if (window.sprayApp?.pickGameFolder) {
+    const picked = await window.sprayApp.pickGameFolder();
+    if (picked?.canceled || !picked?.path) return;
+    await saveGamePath(picked.path);
+    return;
+  }
+  manualForm.hidden = !manualForm.hidden;
+  if (!manualForm.hidden) manualInput.focus();
+});
+
+$('steam-manual-save').addEventListener('click', () => saveGamePath(manualInput.value));
+manualInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') saveGamePath(manualInput.value);
+});
+
+async function saveGamePath(candidate) {
+  if (!candidate) return;
+  try {
+    const resp = await fetch('/api/steam/locate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ path: candidate }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(errorMessage(data));
+
+    state.steam = data;
+    manualForm.hidden = true;
+    renderGameLocation();
+    showStatus(t('steam.saved'), 'ok');
+  } catch (err) {
+    showStatus(err.message || t('error.INVALID_GAME_PATH'), 'error');
+  }
+}
+
+/* --------------------------------------------------------- actualizar --- */
+
+$('check-updates').addEventListener('click', async () => {
+  const api = window.sprayApp;
+  if (!api?.checkForUpdates) {
+    showStatus(t('update.onlyDesktop'), 'info');
+    return;
   }
 
-  setButtonsEnabled(!downloadBtn.disabled);
-}
+  showStatus(t('update.checking'), 'info');
+  const result = await api.checkForUpdates();
+
+  if (result?.skipped) showStatus(t('update.devMode'), 'info');
+  else if (result?.error) showStatus(t('update.failed'), 'error');
+  else if (!result?.version) showStatus(t('update.upToDate'), 'ok');
+  // Si hay version nueva, el evento 'available' muestra la barra de arriba.
+  else hideStatus();
+});
 
 /* ---------------------------------------------------------------- idioma --- */
 
