@@ -548,3 +548,194 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .steam-box .hint { margin-top: 8px; }
 
 .footer-right { display: flex; align-items: center; gap: 12px; }
+
+/* -------------------------------------------------- sprays instalados --- */
+
+.library {
+  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.library-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 14px;
+  border: 0;
+  background: none;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.library-toggle:hover { color: var(--accent-hover); }
+
+/* Triangulo que gira al abrir, dibujado con bordes para no depender de fuentes. */
+.library-chevron {
+  width: 0;
+  height: 0;
+  border-left: 5px solid var(--muted);
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.15s ease;
+}
+
+.library.open .library-chevron { transform: rotate(90deg); }
+
+.library-count {
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+.library-body {
+  padding: 0 14px 14px;
+  border-top: 1px solid var(--border);
+}
+
+.library-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.library-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+.library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 10px;
+  max-height: 460px;
+  overflow-y: auto;
+}
+
+.spray-card {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--panel-2);
+}
+
+/* Cuadriculado para que se note la transparencia del spray. */
+.spray-thumb {
+  position: relative;
+  flex-shrink: 0;
+  width: 84px;
+  height: 84px;
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--muted);
+  background-color: #cfcfcf;
+  background-image:
+    linear-gradient(45deg, #9a9a9a 25%, transparent 25%, transparent 75%, #9a9a9a 75%),
+    linear-gradient(45deg, #9a9a9a 25%, transparent 25%, transparent 75%, #9a9a9a 75%);
+  background-size: 16px 16px;
+  background-position: 0 0, 8px 8px;
+}
+
+.spray-thumb[data-state="failed"] { background: var(--panel); padding: 6px; }
+
+.spray-thumb canvas {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.spray-thumb[data-state="loading"] canvas,
+.spray-thumb[data-state="failed"] canvas { display: none; }
+
+.spray-tag {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--accent) 85%, black);
+  color: #fff;
+  font-size: 0.66rem;
+  font-weight: 600;
+}
+
+.spray-info {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.spray-name {
+  margin: 0;
+  font-size: 0.92rem;
+  /* Los nombres largos no deben empujar la tarjeta. */
+  overflow-wrap: anywhere;
+}
+
+.spray-meta { margin: 0; font-size: 0.76rem; color: var(--muted); }
+
+.spray-warn {
+  margin: 0;
+  font-size: 0.76rem;
+  color: var(--accent);
+}
+
+.spray-buttons,
+.spray-rename,
+.spray-confirm-buttons {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: auto;
+}
+
+.mini-btn.danger { border-color: color-mix(in srgb, var(--danger) 45%, var(--border)); }
+.mini-btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+
+.spray-rename input {
+  flex: 1;
+  min-width: 90px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  font-size: 0.82rem;
+}
+
+.spray-confirm { margin-top: auto; }
+
+.spray-confirm p {
+  margin: 0 0 6px;
+  font-size: 0.78rem;
+  color: var(--danger);
+}
+
+.spray-files {
+  margin: 0 0 8px;
+  padding-left: 16px;
+  max-height: 92px;
+  overflow-y: auto;
+  font-size: 0.7rem;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}

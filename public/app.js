@@ -1,6 +1,7 @@
 import { t, setLang, getLang, applyTranslations } from './i18n.js';
 import { Cropper } from './cropper.js';
 import { setupUpdater } from './updater.js';
+import { setupLibrary, refreshLibrary } from './library.js';
 
 const MAX_FRAMES = 10;
 const SIZE_LIMIT_BYTES = 512 * 1024;
@@ -627,6 +628,8 @@ async function generate(target) {
       const data = await resp.json();
       const howTo = state.mode === 'video' ? t('status.howToAnimated') : t('status.howToStatic');
       showStatus(`${t('status.installed')} ${howTo}<br><code>${data.command}</code>`, 'ok');
+      // El spray recien instalado tiene que aparecer en la lista de abajo.
+      refreshLibrary();
     } else {
       await downloadFile(resp);
       showStatus(t('status.downloaded'), 'ok');
@@ -741,6 +744,7 @@ $('steam-auto').addEventListener('click', async () => {
     state.steam = { found: false };
   }
   renderGameLocation();
+  refreshLibrary();
   if (!state.steam.found) showStatus(t('steam.autoFailed'), 'error');
 });
 
@@ -779,6 +783,7 @@ async function saveGamePath(candidate) {
     state.steam = data;
     manualForm.hidden = true;
     renderGameLocation();
+    refreshLibrary();
     showStatus(t('steam.saved'), 'ok');
   } catch (err) {
     showStatus(err.message || t('error.INVALID_GAME_PATH'), 'error');
@@ -818,6 +823,8 @@ document.addEventListener('languagechange', () => {
   if ([...aspectSelect.options].some((o) => o.value === keep)) aspectSelect.value = keep;
   if (state.frameCount) updateFrameUI();
   if (state.file) onCropChanged(); else updateEstimate();
+  // Las tarjetas llevan sus textos ya puestos: se rehacen en el idioma nuevo.
+  refreshLibrary();
 });
 
 document.querySelectorAll('.mode-btn').forEach((btn) => {
@@ -831,3 +838,4 @@ applyTranslations();
 setMode('image');
 detectSteam();
 setupUpdater();
+setupLibrary({ showStatus });

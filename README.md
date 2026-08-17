@@ -25,6 +25,7 @@ Tambien hay un boton **Buscar actualizaciones** abajo del todo para comprobarlo 
 - **Videos y GIF**: elige hasta 10 frames de la animacion y encuadra el recorte 1:1 sobre video vertical u horizontal.
 - **Previsualizador** que muestra como quedara en el juego, animandose a la velocidad real del motor.
 - **Instalacion automatica**: detecta tu Left 4 Dead 2 en Steam y deja los archivos donde van.
+- **Lista de los sprays que ya tienes**, con vista previa animada, para renombrarlos o borrarlos sin abrir carpetas.
 
 ## Cómo usarla
 
@@ -44,6 +45,30 @@ Idioma español o inglés, seleccionable arriba a la derecha.
 3. Ajusta la selección haciendo clic en las miniaturas — **el orden de los clics es el orden de la animación**. El máximo es 10 imágenes.
 4. Si el video no es cuadrado, mueve el **recuadro 1:1** sobre la parte que quieras conservar. Funciona igual con videos verticales y horizontales.
 5. Genera. La velocidad no se elige: el motor anima siempre a 5 FPS (ver más abajo).
+
+### Sprays instalados: verlos, renombrarlos y borrarlos
+
+Arriba hay un panel **"Sprays instalados"** que se abre y se cierra. Dentro está
+todo lo que hay suelto en las carpetas del juego, con su vista previa: los
+animados se mueven ahí mismo a los 5 FPS del motor, así que se reconocen de un
+vistazo sin entrar al juego.
+
+De cada spray se muestra el tamaño, el formato, cuántos frames tiene y lo que
+pesa. Si a alguno le falta el `.vmt` se avisa, porque sin él el juego no puede
+usarlo aunque el `.vtf` esté ahí.
+
+- **Renombrar** — cambia el nombre en todos lados a la vez. No es solo mover
+  archivos: el `.vmt` lleva dentro la ruta de la textura (`$basetexture`) y hay
+  que reescribirla, o el spray sale en rosa y negro. Se avisa si el nombre ya
+  está ocupado, para no pisar otro spray. Como `cl_logofile` guarda la ruta
+  vieja, después de renombrar hay que volver a activarlo con el comando nuevo,
+  que aparece en el aviso.
+- **Borrar** — antes de borrar nada se listan los archivos exactos que se van a
+  quitar (suelen ser cuatro, repartidos en tres carpetas). No se puede deshacer.
+- **Copiar comando** — deja el `cl_logofile` listo para pegar en la consola.
+
+La vista previa se lee del propio `.vtf`, aprovechando la cadena de mipmaps que
+ya trae dentro: no hay que reescalar ni convertir nada.
 
 ### Los dos métodos del juego, y cuál sirve para animados
 
@@ -154,6 +179,8 @@ Al mover el juego de disco, Steam deja atrás las carpetas de datos del usuario 
 ## Notas técnicas
 
 - El VTF se genera con [`vtf-js`](https://www.npmjs.com/package/vtf-js); la compresión DXT se habilita con el addon `vtf-js/addons/squish`. No hace falta VTFLib ni herramientas externas.
+- Para **leer** los VTF ya instalados se usa una segunda copia de la librería, `vtf-js@1.x`, declarada como `vtf-js-decoder`. La 0.9.4 con la que se generan no sabe leer los VTF que traen tabla de recursos —los que hace VTFEdit y los oficiales de Valve— y falla con *"Offset is outside the bounds of the DataView"*. Como el visualizador tiene que mostrar también los sprays hechos con otras herramientas, hace falta el lector nuevo. Se mantienen las dos porque la API de 1.x cambió bastante (`VFrameCollection` ya no existe) y migrar el generador es un trabajo aparte, con su propia verificación.
+- El lector **no** importa `vtf-js-decoder/addons/squish`, y no es un olvido: las dos versiones comparten la misma copia de `libsquish-js`, y cargar ese addon deja al generador sin compresión DXT. Para leer no hace falta, porque 1.x trae su propio descompresor.
 - Los frames se extraen con FFmpeg a RGBA crudo y se cachean en una sesión temporal, así al cambiar la selección no se vuelve a procesar el video.
 - Las sesiones temporales se borran solas a los 30 minutos y al cerrar el servidor.
 - Los lados del VTF se redondean a potencia de dos, igual que el "Nearest Power Of 2" de VTFEdit. Por eso las proporciones ofrecidas son 1:1, 2:1, 1:2, 4:1 y 1:4: un 4:3 pediría un lado de 384 px, que no es potencia de dos, y terminaría estirando la imagen. Con recorte libre la app avisa si el redondeo va a deformar el resultado.
@@ -166,6 +193,17 @@ node scripts/verify-vtf.mjs
 ```
 
 Genera un VTF en memoria, lo decodifica y valida dimensiones y cantidad de frames.
+
+```bash
+node scripts/test-spray-library.mjs
+```
+
+Prueba el panel de sprays instalados: listar, renombrar y borrar. Monta una
+instalación falsa del juego en una carpeta temporal y también mueve el "home"
+del proceso, así que **no toca ni tus sprays ni tu configuración**. Comprueba,
+entre otras cosas, que al renombrar se reescribe el `$basetexture` de los `.vmt`,
+que no se pisa un spray existente y que los nombres con `../` no salen de las
+carpetas del juego.
 
 
 ## Desarrollo

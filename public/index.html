@@ -43,6 +43,26 @@
       <p class="hint" id="steam-manual-hint" hidden data-i18n="steam.manual.hint"></p>
     </div>
 
+    <section id="library" class="library" hidden>
+      <button type="button" id="library-toggle" class="library-toggle" aria-expanded="false" aria-controls="library-body">
+        <span class="library-chevron" aria-hidden="true"></span>
+        <span data-i18n="library.title"></span>
+        <span id="library-count" class="library-count"></span>
+      </button>
+
+      <div id="library-body" class="library-body" hidden>
+        <div class="library-toolbar">
+          <p class="hint" id="library-hint" data-i18n="library.hint"></p>
+          <div class="library-actions">
+            <button type="button" id="library-refresh" class="mini-btn" data-i18n="library.refresh"></button>
+            <button type="button" id="library-open" class="mini-btn" hidden data-i18n="library.open"></button>
+          </div>
+        </div>
+        <div id="library-grid" class="library-grid"></div>
+        <p class="hint" id="library-empty" hidden data-i18n="library.empty"></p>
+      </div>
+    </section>
+
     <div class="mode-toggle">
       <button type="button" class="mode-btn active" data-mode="image" data-i18n="mode.image"></button>
       <button type="button" class="mode-btn" data-mode="video" data-i18n="mode.video"></button>

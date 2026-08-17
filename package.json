@@ -1,6 +1,6 @@
 {
   "name": "l4d2-spray-maker",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": false,
   "type": "module",
   "description": "Crea sprays estaticos y animados (.vtf) para Left 4 Dead 2 desde fotos, videos y GIF, y los instala directamente en el juego.",
@@ -35,7 +35,8 @@
     "ffmpeg-static": "^5.3.0",
     "ffprobe-static": "^3.1.0",
     "multer": "^2.0.0",
-    "vtf-js": "^0.9.4"
+    "vtf-js": "^0.9.4",
+    "vtf-js-decoder": "npm:vtf-js@^1.1.5"
   },
   "devDependencies": {
     "electron": "^43.2.0",

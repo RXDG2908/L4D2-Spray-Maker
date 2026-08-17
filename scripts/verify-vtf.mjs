@@ -15,7 +15,12 @@ for (let f = 0; f < frameCount; f++) {
   frames.push(buf);
 }
 
-const arrayBuffer = await buildVtf(frames, size);
+const arrayBuffer = await buildVtf(
+  frames,
+  { width: size, height: size },
+  { width: size, height: size },
+  'dxt1',
+);
 console.log('encoded bytes:', arrayBuffer.byteLength);
 
 const decoded = await Vtf.decode(arrayBuffer);

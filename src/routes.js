@@ -13,6 +13,15 @@ import { buildVmt, buildUiVmt, buildLogoCommand, ENGINE_SPRAY_FPS } from './vmtB
 import { encodeTga32 } from './tgaEncoder.js';
 import { locateL4D2, setGamePath, clearGamePath } from './steamLocator.js';
 import { createSession, getSession, destroySession } from './sessionStore.js';
+import {
+  listInstalledSprays,
+  listSprayFiles,
+  resolveSprayFile,
+  renameSpray,
+  deleteSpray,
+} from './sprayLibrary.js';
+import { readVtfFrames } from './vtfReader.js';
+import { sanitizeName } from './sprayName.js';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -28,17 +37,6 @@ const QUALITIES = new Set(['uncompressed', 'dxt5', 'dxt1']);
 
 /** Los sprays propios van en logos/custom, separados de los de Valve. */
 const SPRAY_FOLDER = 'custom';
-
-function sanitizeName(raw) {
-  const cleaned = String(raw ?? '')
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
-    .replace(/[^a-z0-9_-]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 40);
-  return cleaned || 'spray';
-}
 
 /** Normaliza el rectangulo de recorte que manda la interfaz. */
 function parseCrop(raw) {
@@ -131,6 +129,88 @@ router.get('/api/sprays', async (_req, res) => {
     console.error(err);
     res.json({ names: [] });
   }
+});
+
+/* --------------------------------------------------- sprays instalados --- */
+
+/** Lados admitidos para la vista previa, para no decodificar de mas por capricho. */
+const PREVIEW_MAX_SIDES = new Set([64, 128, 256, 512]);
+
+/** Inventario completo de lo que hay en las carpetas del juego. */
+router.get('/api/sprays/installed', async (_req, res) => {
+  try {
+    res.json(await listInstalledSprays());
+  } catch (err) {
+    console.error(err);
+    res.json({ found: false, sprays: [] });
+  }
+});
+
+/**
+ * Pixeles RGBA crudos de un spray instalado, listos para volcarlos en un canvas.
+ *
+ * Se manda binario en vez de PNG porque el VTF ya trae hecha la cadena de
+ * mipmaps: se lee el nivel que corresponde al tamaño pedido y no hay que
+ * reescalar ni recomprimir nada.
+ */
+router.get('/api/sprays/pixels', async (req, res) => {
+  const file = await resolveSprayFile(String(req.query.location || ''), req.query.name);
+  if (!file) {
+    return fail(res, 404, 'SPRAY_NOT_FOUND', 'Ese spray ya no esta en la carpeta.');
+  }
+
+  const requested = Number(req.query.max);
+  const maxSide = PREVIEW_MAX_SIDES.has(requested) ? requested : 128;
+
+  try {
+    const decoded = await readVtfFrames(file, maxSide);
+    res.setHeader('Content-Type', 'application/octet-stream');
+    res.setHeader('X-Spray-Width', String(decoded.width));
+    res.setHeader('X-Spray-Height', String(decoded.height));
+    res.setHeader('X-Spray-Frames', String(decoded.frames.length));
+    res.end(Buffer.concat(decoded.frames));
+  } catch {
+    // Un VTF ilegible no es un fallo del servidor: puede estar corrupto o venir
+    // de una herramienta rara. La lista ya lo marca como sin vista previa.
+    fail(res, 422, 'SPRAY_UNREADABLE', 'No se pudo leer ese archivo VTF.');
+  }
+});
+
+/** Archivos que componen un spray, para poder avisar antes de borrarlo. */
+router.get('/api/sprays/files', async (req, res) => {
+  const result = await listSprayFiles(String(req.query.location || ''), req.query.name);
+  if (!result.ok) {
+    return fail(res, 404, result.error, 'Ese spray ya no esta en la carpeta.');
+  }
+  res.json(result);
+});
+
+/**
+ * Renombra un spray entero. No basta con mover archivos: los .vmt llevan dentro
+ * la ruta de la textura y hay que reescribirla, cosa que hace sprayLibrary.
+ */
+router.post('/api/sprays/rename', express.json(), async (req, res) => {
+  const result = await renameSpray(
+    String(req.body?.location || ''),
+    req.body?.name,
+    req.body?.newName,
+  );
+
+  if (!result.ok) {
+    const status = result.error === 'NAME_TAKEN' ? 409 : 400;
+    return fail(res, status, result.error, 'No se pudo renombrar el spray.');
+  }
+  res.json(result);
+});
+
+/** Borra un spray con todas sus piezas. */
+router.post('/api/sprays/delete', express.json(), async (req, res) => {
+  const result = await deleteSpray(String(req.body?.location || ''), req.body?.name);
+  if (!result.ok) {
+    const status = result.error === 'SPRAY_NOT_FOUND' ? 404 : 400;
+    return fail(res, status, result.error, 'No se pudo borrar el spray.');
+  }
+  res.json(result);
 });
 
 /* -------------------------------------------------------------- Analisis --- */
