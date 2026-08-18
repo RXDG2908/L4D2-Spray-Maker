@@ -9,6 +9,10 @@ Crea sprays **estaticos y animados** para Left 4 Dead 2 a partir de fotos, video
 
 Ve a [**Releases**](https://github.com/RXDG2908/L4D2-Spray-Maker/releases/latest) y descarga `L4D2-Spray-Maker-Setup-x.x.x.exe`.
 
+El instalador pesa menos de **1 MB**: es una cascara que al ejecutarse descarga
+el paquete de la app desde el propio Releases de GitHub. Necesita conexion
+durante la instalacion, y a cambio la descarga inicial es inmediata.
+
 Ejecutalo y listo: **no hace falta instalar nada mas**, ni Node ni FFmpeg. La app trae todo incluido y se actualiza sola.
 
 > Windows puede mostrar un aviso de "Windows protegio tu PC" porque el instalador no esta firmado con un certificado de pago. Pulsa **Mas informacion > Ejecutar de todas formas**.
@@ -227,8 +231,28 @@ Requiere Node.js. FFmpeg viene incluido como dependencia, no hace falta instalar
 npm install
 npm run electron     # app de escritorio
 npm start            # solo el servidor, en http://localhost:3000
-npm run build        # genera el instalador en dist/
+npm run build        # genera el instalador en dist/nsis-web/
 ```
+
+### Como se empaqueta
+
+El target es `nsis-web`, no `nsis`. En vez de un `.exe` de 131 MB produce dos
+artefactos, que se suben juntos al Release:
+
+| Archivo | Peso | Que es |
+|---|---|---|
+| `L4D2-Spray-Maker-Setup-x.x.x.exe` | ~0,7 MB | La cascara que descarga el resto |
+| `l4d2-spray-maker-x.x.x-x64.nsis.7z` | ~131 MB | El paquete con la app |
+
+La cascara saca la URL del paquete del bloque `publish` de package.json, asi que
+apunta sola al Release que toca. Si el `.7z` esta en la misma carpeta que el
+`.exe`, lo usa de ahi en vez de descargarlo: comodo para probar en local, pero
+hay que tenerlo en cuenta, porque una prueba hecha asi **no** comprueba la
+descarga.
+
+Lo que se descarga en total es lo mismo. Lo que cambia es que el boton de
+descarga entrega un archivo diminuto. El peso de verdad esta en Electron
+(~305 MB instalados) y en los binarios de FFmpeg (~139 MB).
 
 ## Licencia
 
