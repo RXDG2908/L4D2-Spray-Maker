@@ -11,6 +11,8 @@ const TRANSLATIONS = {
     'drop.image': 'Arrastra una foto aquí, o haz clic para elegir un archivo',
     'drop.video': 'Arrastra un video o GIF aquí, o haz clic para elegir un archivo',
     'drop.remove': 'Quitar',
+    'drop.formats.image': 'PNG, JPG, GIF, WebP, BMP, TGA o TIFF',
+    'drop.formats.video': 'MP4, WebM, MOV, AVI, MKV o GIF',
 
     'field.name': 'Nombre del spray',
     'field.name.placeholder': 'mi-spray',
@@ -143,6 +145,8 @@ const TRANSLATIONS = {
     'drop.image': 'Drag a photo here, or click to pick a file',
     'drop.video': 'Drag a video or GIF here, or click to pick a file',
     'drop.remove': 'Remove',
+    'drop.formats.image': 'PNG, JPG, GIF, WebP, BMP, TGA or TIFF',
+    'drop.formats.video': 'MP4, WebM, MOV, AVI, MKV or GIF',
 
     'field.name': 'Spray name',
     'field.name.placeholder': 'my-spray',

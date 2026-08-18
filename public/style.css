@@ -10,6 +10,25 @@
   --accent-hover: #ff9142;
   --danger: #ff5b5b;
   --ok: #52c780;
+
+  /* Escala tipografica: seis pasos en vez de los catorce tamaños sueltos que
+     habia, varios de ellos separados por 0,02rem y por tanto indistinguibles. */
+  --fs-xs: 0.75rem;
+  --fs-sm: 0.82rem;
+  --fs-md: 0.9rem;
+  --fs-base: 0.95rem;
+  --fs-lg: 1.05rem;
+  --fs-xl: 1.75rem;
+
+  /* Radios: tres, segun el tamaño del elemento. Los circulos y las pildoras
+     (50%, 999px) van aparte porque no forman parte de la escala. */
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 14px;
+
+  /* Movimiento */
+  --dur: 150ms;
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 * { box-sizing: border-box; }
@@ -50,28 +69,28 @@ body {
   gap: 12px;
 }
 
-h1 { margin: 0 0 4px; font-size: 1.75rem; }
-h2 { margin: 0 0 6px; font-size: 1.05rem; }
+h1 { margin: 0 0 4px; font-size: var(--fs-xl); }
+h2 { margin: 0 0 6px; font-size: var(--fs-lg); }
 
 .subtitle { margin: 0 0 20px; color: var(--muted); }
 
 .lang-select {
   padding: 6px 10px;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  font-size: 0.9rem;
+  font-size: var(--fs-md);
 }
 
 /* ---------------------------------------------------------------- steam --- */
 
 .steam-box {
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: var(--panel);
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   margin-bottom: 18px;
 }
 
@@ -82,7 +101,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   display: block;
   margin-top: 6px;
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: var(--fs-sm);
   word-break: break-all;
 }
 
@@ -93,12 +112,12 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .mode-btn {
   flex: 1;
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: var(--panel);
   color: var(--text);
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
 }
 
 .mode-btn.active {
@@ -110,7 +129,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 
 .dropzone {
   border: 2px dashed var(--border);
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   min-height: 200px;
   display: flex;
   align-items: center;
@@ -130,7 +149,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .preview-wrap video {
   max-width: 100%;
   max-height: 280px;
-  border-radius: 8px;
+  border-radius: var(--r-md);
 }
 
 .clear-btn {
@@ -144,7 +163,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   width: 28px;
   height: 28px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
@@ -153,7 +172,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .frames-section {
   margin-top: 22px;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   background: var(--panel);
   border: 1px solid var(--border);
 }
@@ -167,16 +186,16 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   flex-wrap: wrap;
 }
 
-.frames-counter { font-size: 0.9rem; color: var(--accent); font-weight: 600; }
+.frames-counter { font-size: var(--fs-md); color: var(--accent); font-weight: 600; }
 .frames-actions { display: flex; gap: 8px; }
 
 .mini-btn {
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--text);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
   cursor: pointer;
 }
 
@@ -194,7 +213,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   position: relative;
   padding: 0;
   border: 2px solid transparent;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   overflow: hidden;
   cursor: pointer;
   background: var(--panel-2);
@@ -222,7 +241,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   border-radius: 999px;
   background: var(--accent);
   color: #1a1200;
-  font-size: 0.75rem;
+  font-size: var(--fs-xs);
   font-weight: 700;
   line-height: 20px;
   text-align: center;
@@ -236,7 +255,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .crop-section {
   margin-top: 22px;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   background: var(--panel);
   border: 1px solid var(--border);
 }
@@ -245,11 +264,11 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 
 .mini-select {
   padding: 6px 10px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--text);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
 }
 
 .mini-select:disabled { opacity: 0.5; }
@@ -273,7 +292,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   display: block;
   max-width: 100%;
   max-height: 360px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
 }
 
 .cropper-shade {
@@ -281,7 +300,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
 }
 
 .cropper-box {
@@ -296,7 +315,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   width: 14px;
   height: 14px;
   background: var(--accent);
-  border-radius: 3px;
+  border-radius: var(--r-sm);
 }
 
 .cropper-handle[data-h="nw"] { top: -8px; left: -8px; cursor: nwse-resize; }
@@ -309,7 +328,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .spray-preview {
   margin-top: 22px;
   padding: 16px;
-  border-radius: 12px;
+  border-radius: var(--r-lg);
   background: var(--panel);
   border: 1px solid var(--border);
 }
@@ -327,11 +346,11 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 
 .bg-btn {
   padding: 5px 10px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   cursor: pointer;
 }
 
@@ -342,7 +361,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   align-items: center;
   justify-content: center;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   min-height: 220px;
   /* Pared de cemento, que es donde suele pintarse el spray. */
   background-color: #5a5750;
@@ -364,7 +383,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   max-width: 100%;
   max-height: 320px;
   image-rendering: auto;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
 }
 
 /* -------------------------------------------------------------- opciones --- */
@@ -383,18 +402,18 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 0.9rem;
+  font-size: var(--fs-md);
   color: var(--muted);
 }
 
 .field input[type="text"],
 .field select {
   padding: 10px;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   border: 1px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  font-size: 1rem;
+  font-size: var(--fs-base);
 }
 
 .field input[type="range"] { width: 100%; }
@@ -403,17 +422,17 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.88rem;
+  font-size: var(--fs-sm);
   color: var(--muted);
   cursor: pointer;
 }
 
-.hint { margin: 0; font-size: 0.84rem; color: var(--muted); }
+.hint { margin: 0; font-size: var(--fs-sm); color: var(--muted); }
 
 .size-estimate {
   padding: 9px 12px;
-  border-radius: 8px;
-  font-size: 0.86rem;
+  border-radius: var(--r-md);
+  font-size: var(--fs-sm);
 }
 
 .size-estimate.ok {
@@ -434,9 +453,9 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   flex: 1;
   padding: 14px;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--r-md);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--fs-base);
   cursor: pointer;
 }
 
@@ -455,8 +474,8 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .status {
   margin-top: 16px;
   padding: 12px 14px;
-  border-radius: 8px;
-  font-size: 0.9rem;
+  border-radius: var(--r-md);
+  font-size: var(--fs-md);
   line-height: 1.5;
 }
 
@@ -464,9 +483,9 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   display: inline-block;
   margin-top: 6px;
   padding: 4px 8px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   background: rgba(0, 0, 0, 0.35);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   user-select: all;
 }
 
@@ -476,7 +495,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 
 .engine-note {
   padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: var(--r-md);
   background: color-mix(in srgb, var(--accent) 10%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
   line-height: 1.5;
@@ -498,7 +517,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   padding: 10px 16px;
   background: color-mix(in srgb, var(--accent) 22%, var(--panel));
   border-bottom: 1px solid var(--accent);
-  font-size: 0.9rem;
+  font-size: var(--fs-md);
 }
 
 .update-actions { display: flex; align-items: center; gap: 8px; }
@@ -523,7 +542,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   color: var(--muted);
 }
 
@@ -549,11 +568,11 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   flex: 1;
   min-width: 0;
   padding: 8px 10px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--panel-2);
   color: var(--text);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
 }
 
 .steam-box .hint { margin-top: 8px; }
@@ -565,7 +584,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 .library {
   margin-bottom: 18px;
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--r-md);
   background: var(--panel);
   overflow: hidden;
 }
@@ -579,7 +598,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   border: 0;
   background: none;
   color: var(--text);
-  font-size: 0.95rem;
+  font-size: var(--fs-base);
   font-weight: 600;
   text-align: left;
   cursor: pointer;
@@ -605,7 +624,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   background: var(--panel-2);
   border: 1px solid var(--border);
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   font-weight: 500;
 }
 
@@ -638,7 +657,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   gap: 10px;
   padding: 10px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--r-md);
   background: var(--panel-2);
 }
 
@@ -648,12 +667,12 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   flex-shrink: 0;
   width: 84px;
   height: 84px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   line-height: 1.25;
   text-align: center;
   color: var(--muted);
@@ -680,10 +699,10 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   left: 4px;
   bottom: 4px;
   padding: 1px 6px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   background: color-mix(in srgb, var(--accent) 85%, black);
   color: #fff;
-  font-size: 0.66rem;
+  font-size: var(--fs-xs);
   font-weight: 600;
 }
 
@@ -697,16 +716,16 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 
 .spray-name {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: var(--fs-md);
   /* Los nombres largos no deben empujar la tarjeta. */
   overflow-wrap: anywhere;
 }
 
-.spray-meta { margin: 0; font-size: 0.76rem; color: var(--muted); }
+.spray-meta { margin: 0; font-size: var(--fs-xs); color: var(--muted); }
 
 .spray-warn {
   margin: 0;
-  font-size: 0.76rem;
+  font-size: var(--fs-xs);
   color: var(--accent);
 }
 
@@ -726,18 +745,18 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   flex: 1;
   min-width: 90px;
   padding: 5px 8px;
-  border-radius: 6px;
+  border-radius: var(--r-sm);
   border: 1px solid var(--border);
   background: var(--panel);
   color: var(--text);
-  font-size: 0.82rem;
+  font-size: var(--fs-sm);
 }
 
 .spray-confirm { margin-top: auto; }
 
 .spray-confirm p {
   margin: 0 0 6px;
-  font-size: 0.78rem;
+  font-size: var(--fs-xs);
   color: var(--danger);
 }
 
@@ -746,7 +765,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   padding-left: 16px;
   max-height: 92px;
   overflow-y: auto;
-  font-size: 0.7rem;
+  font-size: var(--fs-xs);
   color: var(--muted);
   overflow-wrap: anywhere;
 }
@@ -825,7 +844,7 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
 }
 
 .steam-box.compact #steam-text {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   display: flex;
   align-items: center;
   gap: 7px;
@@ -840,4 +859,128 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   border-radius: 50%;
   background: var(--ok);
   flex-shrink: 0;
+}
+
+
+/* ------------------------------------------------ foco y movimiento --- */
+
+/**
+ * Anillo de foco.
+ *
+ * No habia ninguno en toda la hoja: navegando con el teclado no se veia donde
+ * estabas. Se usa :focus-visible para que solo aparezca cuando hace falta —con
+ * teclado— y no al hacer clic con el raton.
+ */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Dentro de la grilla de frames el anillo se pega al borde de la celda. */
+.frame-cell:focus-visible { outline-offset: -2px; }
+
+/**
+ * Movimiento.
+ *
+ * Antes habia tres transiciones en toda la hoja, asi que cada cambio era un
+ * corte seco. Se anima solo lo barato (color, borde, opacidad, transform);
+ * nada de animar tamaños, que provoca reflow.
+ */
+button,
+select,
+input,
+.mode-btn,
+.mini-btn,
+.bg-btn,
+.btn,
+.library-toggle,
+.spray-card,
+.dropzone {
+  transition:
+    background-color var(--dur) var(--ease),
+    border-color var(--dur) var(--ease),
+    color var(--dur) var(--ease),
+    opacity var(--dur) var(--ease),
+    box-shadow var(--dur) var(--ease),
+    transform var(--dur) var(--ease);
+}
+
+/* Un empujon al pulsar: la respuesta se siente aunque dure nada. */
+button:active:not(:disabled) { transform: translateY(1px); }
+
+.spray-card:hover { border-color: var(--border-hover, #3a3d4a); }
+
+/* Quien pide menos movimiento en el sistema, no lo recibe. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
+/* -------------------------------------------- jerarquia de acciones --- */
+
+/**
+ * "Instalar" es lo que viene a hacer el usuario; "Descargar" es la salida de
+ * emergencia para quien no tiene el juego detectado. Ocupaban la mitad cada
+ * uno y pesaban lo mismo, asi que no habia forma de saber cual era cual.
+ */
+.btn-primary {
+  flex: 1;
+  box-shadow: 0 2px 12px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+
+.btn-primary:hover:not(:disabled) {
+  box-shadow: 0 3px 16px color-mix(in srgb, var(--accent) 38%, transparent);
+}
+
+.btn-secondary {
+  flex: 0 0 auto;
+  background: transparent;
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--panel-2);
+  color: var(--text);
+}
+
+.btn:disabled { box-shadow: none; }
+
+/* ------------------------------------------------- estado inicial --- */
+
+.dropzone:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+
+.dropzone.drag-over {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, var(--panel));
+}
+
+.dropzone-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
+  display: block;
+  color: var(--muted);
+  transition: color var(--dur) var(--ease);
+}
+
+.dropzone:hover .dropzone-icon,
+.dropzone.drag-over .dropzone-icon { color: var(--accent); }
+
+.dropzone-empty strong {
+  display: block;
+  color: var(--text);
+  font-size: var(--fs-base);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.dropzone-formats {
+  margin: 6px 0 0;
+  font-size: var(--fs-xs);
+  color: var(--muted);
 }

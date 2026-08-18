@@ -139,6 +139,10 @@ function setMode(mode) {
   dropzoneLabel.dataset.i18n = mode === 'video' ? 'drop.video' : 'drop.image';
   dropzoneLabel.textContent = t(dropzoneLabel.dataset.i18n);
 
+  const formats = $('dropzone-formats');
+  formats.dataset.i18n = mode === 'video' ? 'drop.formats.video' : 'drop.formats.image';
+  formats.textContent = t(formats.dataset.i18n);
+
   $('fps-field').hidden = mode !== 'video';
   // Defaults pensados para no pasar los 512 KB.
   qualitySelect.value = mode === 'video' ? 'dxt1' : 'dxt5';
