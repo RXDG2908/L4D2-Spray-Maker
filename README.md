@@ -3,229 +3,73 @@
 [![Licencia: MIT](https://img.shields.io/badge/Licencia-MIT-ff7a1a.svg)](LICENSE)
 [![Descargar](https://img.shields.io/github/v/release/RXDG2908/L4D2-Spray-Maker?label=Descargar&color=52c780)](https://github.com/RXDG2908/L4D2-Spray-Maker/releases/latest)
 
-Crea sprays **estaticos y animados** para Left 4 Dead 2 a partir de fotos, videos o GIF, y los instala directamente en el juego. Reemplaza el flujo manual de **Gif Splitter + VTFEdit**.
+Convierte una foto, un vídeo o un GIF en un spray para Left 4 Dead 2, y lo deja
+instalado en el juego. Sin Gif Splitter, sin VTFEdit.
 
 ## Descargar
 
-Ve a [**Releases**](https://github.com/RXDG2908/L4D2-Spray-Maker/releases/latest) y descarga `L4D2-Spray-Maker-Setup-x.x.x.exe`.
+Ve a [**Releases**](https://github.com/RXDG2908/L4D2-Spray-Maker/releases/latest)
+y descarga `L4D2-Spray-Maker-Setup-x.x.x.exe`.
 
-El instalador pesa menos de **1 MB**: es una cascara que al ejecutarse descarga
-el paquete de la app desde el propio Releases de GitHub. Necesita conexion
-durante la instalacion, y a cambio la descarga inicial es inmediata.
+Pesa menos de 1 MB: al abrirlo descarga el resto solo. No hace falta instalar
+nada más, ni Node ni FFmpeg, y la app se actualiza sola.
 
-Ejecutalo y listo: **no hace falta instalar nada mas**, ni Node ni FFmpeg. La app trae todo incluido y se actualiza sola.
+> Windows dirá "Windows protegió tu PC" porque el instalador no está firmado con
+> un certificado de pago. Pulsa **Más información > Ejecutar de todas formas**.
 
-> Windows puede mostrar un aviso de "Windows protegio tu PC" porque el instalador no esta firmado con un certificado de pago. Pulsa **Mas informacion > Ejecutar de todas formas**.
+## Qué hace
 
-## Actualizaciones automaticas
+- **Fotos** en PNG, JPG, BMP, TGA, WebP, TIFF o GIF, con recorte libre.
+- **Vídeos y GIF**: eliges hasta 10 frames y encuadras el recorte sobre el vídeo.
+- **Vista previa** de cómo va a quedar en el juego, moviéndose a la velocidad real.
+- **Instalación automática**: encuentra tu Left 4 Dead 2 y deja los archivos donde van.
+- **Panel de tus sprays**: mira, renombra y borra los que ya tienes.
+- Español e inglés.
 
-La app comprueba si hay una version nueva al abrirse. Si la hay, aparece un aviso arriba: pulsas **Actualizar ahora**, se descarga sola y con **Reiniciar e instalar** queda al dia. No hace falta saber nada de GitHub ni volver a descargar nada a mano.
+## Cómo se usa
 
-Tambien hay un boton **Buscar actualizaciones** abajo del todo para comprobarlo cuando quieras.
+**Foto** → arrastra la imagen, ajusta el recuadro, ponle nombre y pulsa
+**Instalar en el juego**.
 
-## Que hace
+**Vídeo o GIF** → arrastra el archivo. La app saca frames candidatos y
+preselecciona 10. Haz clic en las miniaturas para ajustar: **el orden de los
+clics es el orden de la animación**. Luego instala.
 
-- **Fotos** en PNG, JPG, BMP, TGA, WebP, TIFF o GIF, con recorte libre (no hace falta que sea cuadrado).
-- **Videos y GIF**: elige hasta 10 frames de la animacion y encuadra el recorte 1:1 sobre video vertical u horizontal.
-- **Previsualizador** que muestra como quedara en el juego, animandose a la velocidad real del motor.
-- **Instalacion automatica**: detecta tu Left 4 Dead 2 en Steam y deja los archivos donde van.
-- **Lista de los sprays que ya tienes**, con vista previa animada, para renombrarlos o borrarlos sin abrir carpetas.
+La velocidad no se elige. El juego anima todos los sprays a 5 FPS fijos, así que
+con 10 frames la vuelta dura 2 segundos.
 
-## Cómo usarla
+### Lo único importante que hay que saber
 
-Idioma español o inglés, seleccionable arriba a la derecha.
+El juego tiene dos formas de poner un spray, y **solo una sirve para animados**:
 
-### Spray normal (foto)
-
-1. Modo **Foto**, arrastra la imagen.
-2. Ajusta el **recorte**: arrastra el recuadro o tira de las esquinas. El aspecto es libre, no hace falta que sea cuadrado.
-3. Elige nombre, tamaño y calidad.
-4. **Instalar en el juego** (si detectó tu Left 4 Dead 2) o **Descargar .vtf**.
-
-### Spray animado (video o GIF)
-
-1. Modo **Video / GIF**, arrastra el archivo.
-2. La app extrae hasta 30 frames candidatos y preselecciona 10 repartidos de forma pareja.
-3. Ajusta la selección haciendo clic en las miniaturas — **el orden de los clics es el orden de la animación**. El máximo es 10 imágenes.
-4. Si el video no es cuadrado, mueve el **recuadro 1:1** sobre la parte que quieras conservar. Funciona igual con videos verticales y horizontales.
-5. Genera. La velocidad no se elige: el motor anima siempre a 5 FPS (ver más abajo).
-
-### Sprays instalados: verlos, renombrarlos y borrarlos
-
-Arriba hay un panel **"Sprays instalados"** que se abre y se cierra. Dentro está
-todo lo que hay suelto en las carpetas del juego, con su vista previa: los
-animados se mueven ahí mismo a los 5 FPS del motor, así que se reconocen de un
-vistazo sin entrar al juego.
-
-De cada spray se muestra el tamaño, el formato, cuántos frames tiene y lo que
-pesa. Si a alguno le falta el `.vmt` se avisa, porque sin él el juego no puede
-usarlo aunque el `.vtf` esté ahí.
-
-- **Renombrar** — cambia el nombre en todos lados a la vez. No es solo mover
-  archivos: el `.vmt` lleva dentro la ruta de la textura (`$basetexture`) y hay
-  que reescribirla, o el spray sale en rosa y negro. Se avisa si el nombre ya
-  está ocupado, para no pisar otro spray. Como `cl_logofile` guarda la ruta
-  vieja, después de renombrar hay que volver a activarlo con el comando nuevo,
-  que aparece en el aviso.
-- **Borrar** — antes de borrar nada se listan los archivos exactos que se van a
-  quitar (suelen ser cuatro, repartidos en tres carpetas). En la app de
-  escritorio van a la **papelera de Windows**, así que un borrado por error se
-  puede deshacer desde ahí. Ejecutando solo el servidor con `npm start` no hay
-  papelera disponible y el borrado sí es definitivo; el aviso lo dice.
-- **Copiar comando** — deja el `cl_logofile` listo para pegar en la consola.
-
-La vista previa se lee del propio `.vtf`, aprovechando la cadena de mipmaps que
-ya trae dentro: no hay que reescalar ni convertir nada.
-
-### Los dos métodos del juego, y cuál sirve para animados
-
-Left 4 Dead 2 ofrece dos formas de poner un spray, y **solo una sirve para los animados**:
-
-| Método | Qué acepta | Animado |
+| En el juego | Qué acepta | ¿Animado? |
 |---|---|---|
-| Opciones > Multijugador > **Importar espray** | una imagen suelta (TGA/BMP/JPG) de `left4dead2/sprays/` | no, la convierte a un VTF de un solo frame |
-| Opciones > Multijugador > **Imagen pulverizada > Logotipo personalizado** | un `.vtf` ya armado | sí, reproduce todos sus frames |
+| Opciones > Multijugador > **Importar espray** | una imagen suelta | **No.** La convierte a un solo cuadro |
+| Opciones > Multijugador > **Imagen pulverizada > Logotipo personalizado** | un `.vtf` | **Sí** |
 
-Por eso un spray animado deja **solo su `.vtf`** en `sprays/`. Si además se dejaran los frames sueltos, aparecerían en el diálogo de "Importar espray" y es fácil elegir uno por error, obteniendo un spray estático de un solo cuadro.
+Si tu spray es animado, elígelo desde **Logotipo personalizado**. Con "Importar
+espray" saldrá congelado.
 
-### Velocidad de la animación: 5 FPS fijos
+## Tus sprays instalados
 
-No es configurable. Al pintar, el motor no usa el `.vmt` del spray sino el suyo, `materials/decals/playerlogoNN.vmt` (hay 64, todos idénticos), que trae:
+El panel **"Sprays instalados"** muestra lo que ya tienes en la carpeta del
+juego, con vista previa; los animados se mueven ahí mismo. De cada uno puedes:
 
-```
-Proxies
-{
-    PlayerLogo { }
-    AnimatedTexture
-    {
-        animatedtexturevar $basetexture
-        animatedtextureframenumvar $frame
-        animatedtextureframerate 5
-    }
-}
-```
+- **Renombrar** — cambia el nombre en todas las carpetas a la vez. Si lo tenías
+  puesto, vuelve a activarlo con el comando nuevo que aparece.
+- **Borrar** — te dice qué archivos se van a quitar. Van a la papelera, así que
+  se pueden recuperar.
+- **Copiar comando** — el `cl_logofile` listo para pegar en la consola.
 
-El proxy `PlayerLogo` intercambia `$basetexture` por el VTF del jugador, y el `AnimatedTexture` lo recorre a 5 FPS. Cualquier `animatedtextureframerate` que pongamos en nuestro `.vmt` se ignora para la calcomanía. Con 10 frames, la vuelta dura 2 segundos.
+## Si no encuentra el juego
 
-### Previsualizador
-
-Antes de instalar, el panel **"Así se verá en el juego"** muestra el resultado con el recorte aplicado y a la resolución final, animándose a los mismos 5 FPS del motor. Se puede cambiar el fondo entre pared, oscuro y cuadriculado para juzgar la transparencia.
-
-## Formatos
-
-El archivo que **lee el juego** es `.vtf` (Valve Texture Format) con un `.vmt` que describe el material. El BMP o el TGA son formatos de *entrada*: es lo que uno le da a VTFEdit para que produzca el VTF. (Los sprays en BMP directo son de GoldSrc: Half-Life 1, CS 1.6.)
-
-**De entrada** acepta PNG, JPG, BMP, TGA, WebP, TIFF y GIF, además de video. La validación es por extensión y no solo por tipo MIME, porque Windows no registra MIME para `.tga` ni `.webp` y el navegador los reporta con tipo vacío. Los formatos que el navegador no sabe dibujar (TGA) se previsualizan convirtiéndolos en el servidor.
-
-**De salida** siempre genera el `.vtf`. Al instalar una foto deja además un TGA de 32 bits en `sprays/`, que es el formato de entrada habitual de VTFEdit y conserva la transparencia.
-
-### El VTF que genera
-
-Se replica la estructura de un VTF hecho con VTFEdit, comparada contra los sprays reales del juego:
-
-- Versión 7.4, cadena completa de mipmaps ("Generate Mipmaps" de VTFEdit) y miniatura interna de 16×16 en DXT1.
-- DXT1 cuando la imagen es opaca y DXT5 cuando tiene alfa, que es el par "Normal Format / Alpha Format" de VTFEdit.
-- Flags `ClampS | ClampT` para que el borde no se repita sobre la pared, más el flag de alfa **solo si la imagen tiene transparencia real**.
-- `reflectivity` calculada como el color medio, igual que hace VTFEdit.
-
-El `.vmt` usa `LightmappedGeneric` con `$decal 1` y `$decalscale 0.250`, que es lo que usan tanto los sprays oficiales de Valve como los generados con VTFEdit. Un `UnlitGeneric` con parámetros de sprite **no** se pinta correctamente como calcomanía.
-
-## Límite de peso y calidad
-
-Los sprays tienen un límite recomendado de **512 KB**. La app muestra el peso estimado en vivo y te avisa si lo superas:
-
-Las cifras incluyen la cadena de mipmaps, que agrega alrededor de un tercio:
-
-| Resolución | Frames | Sin comprimir | DXT5 | DXT1 |
-|---|---|---|---|---|
-| 256x256 | 10 (animado) | 3.4 MB | 875 KB | **427 KB** |
-| 256x256 | 1 | 350 KB | **88 KB** | **44 KB** |
-| 512x512 | 1 | 1.4 MB | **350 KB** | **175 KB** |
-
-Por eso los valores por defecto son DXT1 para animados y DXT5 para estáticos. DXT5 conserva transparencia con degradado; DXT1 solo admite transparencia de 1 bit (con o sin, sin medias tintas).
-
-## Instalación en el juego
-
-### Localizar el juego
-
-Al abrirse, la app busca Left 4 Dead 2 sola. Arriba se muestra la carpeta que encontró, con dos botones:
-
-- **Buscar automáticamente** — vuelve a sondear el registro de Windows y las bibliotecas de Steam.
-- **Localizar manualmente** — abre un selector de carpetas para que elijas tú la instalación. Sirve cuando el juego está en un disco raro o Steam no lo declara.
-
-En la búsqueda manual puedes apuntar a la carpeta `Left 4 Dead 2`, a `left4dead2` o incluso a `left4dead2\sprays`: la app deduce la raíz. La elección queda guardada en tu perfil de usuario, así que sobrevive a las actualizaciones.
-
-Si la carpeta `sprays` no existe, se crea; si ya existe, se respeta y solo se escribe dentro.
-
-### Qué archivos escribe
-
-```
-left4dead2/sprays/<nombre>.tga                        fotos: fuente para "Importar espray"
-left4dead2/sprays/<nombre>.vtf                        animados: listo para "Logotipo personalizado"
-left4dead2/materials/vgui/logos/custom/<nombre>.vtf   el spray
-left4dead2/materials/vgui/logos/custom/<nombre>.vmt   su material
-left4dead2/materials/vgui/logos/UI/<nombre>.vmt       icono del menu de sprays
-```
-
-El `.vmt` de `UI/` no lleva `.vtf` propio: apunta al mismo del spray, igual que hacen los sprays originales del juego.
-
-### Nombres sin colisiones
-
-El nombre se regenera con cada archivo que cargas, y se comprueba contra los sprays que ya tienes instalados. Si `mi-spray` existe, propone `mi-spray-2`. Así no se pisa por accidente un spray anterior.
-
-Después, en la consola de desarrollador (ruta completa y con extensión):
-
-```
-cl_logofile "materials/vgui/logos/custom/<nombre>.vtf"
-```
-
-### Detección de la instalación correcta
-
-Al mover el juego de disco, Steam deja atrás las carpetas de datos del usuario (`materials`, `cfg`, `addons`), que aparentan ser una instalación válida. Por eso el detector exige `gameinfo.txt`, `pak01_dir.vpk` y `left4dead2.exe`, y prioriza la biblioteca cuyo `appmanifest_550.acf` declara el juego. Sin esa validación es fácil escribir los sprays en una carpeta muerta y que el juego nunca los vea.
-
-## Notas técnicas
-
-- El VTF se genera con [`vtf-js`](https://www.npmjs.com/package/vtf-js); la compresión DXT se habilita con el addon `vtf-js/addons/squish`. No hace falta VTFLib ni herramientas externas.
-- Para **leer** los VTF ya instalados se usa una segunda copia de la librería, `vtf-js@1.x`, declarada como `vtf-js-decoder`. La 0.9.4 con la que se generan no sabe leer los VTF que traen tabla de recursos —los que hace VTFEdit y los oficiales de Valve— y falla con *"Offset is outside the bounds of the DataView"*. Como el visualizador tiene que mostrar también los sprays hechos con otras herramientas, hace falta el lector nuevo. Se mantienen las dos porque la API de 1.x cambió bastante (`VFrameCollection` ya no existe) y migrar el generador es un trabajo aparte, con su propia verificación.
-- El lector **no** importa `vtf-js-decoder/addons/squish`, y no es un olvido: las dos versiones comparten la misma copia de `libsquish-js`, y cargar ese addon deja al generador sin compresión DXT. Para leer no hace falta, porque 1.x trae su propio descompresor.
-- Los frames se extraen con FFmpeg a RGBA crudo y se cachean en una sesión temporal, así al cambiar la selección no se vuelve a procesar el video.
-- Las sesiones temporales se borran solas a los 30 minutos y al cerrar el servidor.
-- Los lados del VTF se redondean a potencia de dos, igual que el "Nearest Power Of 2" de VTFEdit. Por eso las proporciones ofrecidas son 1:1, 2:1, 1:2, 4:1 y 1:4: un 4:3 pediría un lado de 384 px, que no es potencia de dos, y terminaría estirando la imagen. Con recorte libre la app avisa si el redondeo va a deformar el resultado.
-- Los animados van siempre en 1:1, con el recuadro movible sobre el video.
-
-### Scripts de verificación
-
-```bash
-node scripts/verify-vtf.mjs
-```
-
-Genera un VTF en memoria, lo decodifica y valida dimensiones y cantidad de frames.
-
-```bash
-node scripts/test-spray-library.mjs
-```
-
-```bash
-node scripts/test-prefs.mjs
-```
-
-Comprueba que las preferencias (idioma, panel abierto) sobreviven a cerrar la
-app. Importa porque el servidor embebido arranca en un puerto libre distinto
-cada vez y `localStorage` se separa por origen, que incluye el puerto: guardadas
-ahí se perdían en cada arranque y el idioma volvía a español. Ahora viven en el
-perfil del usuario, junto a la ruta del juego.
-
-Prueba el panel de sprays instalados: listar, renombrar y borrar. Monta una
-instalación falsa del juego en una carpeta temporal y también mueve el "home"
-del proceso, así que **no toca ni tus sprays ni tu configuración**. Comprueba,
-entre otras cosas, que al renombrar se reescribe el `$basetexture` de los `.vmt`,
-que no se pisa un spray existente y que los nombres con `../` no salen de las
-carpetas del juego.
-
+La app lo busca sola al abrirse. Si no aparece, usa **Localizar manualmente** y
+elige la carpeta `Left 4 Dead 2`. La elección se guarda y sobrevive a las
+actualizaciones.
 
 ## Desarrollo
 
-Requiere Node.js. FFmpeg viene incluido como dependencia, no hace falta instalarlo aparte.
+Requiere Node.js. FFmpeg viene incluido, no hay que instalarlo aparte.
 
 ```bash
 npm install
@@ -234,30 +78,14 @@ npm start            # solo el servidor, en http://localhost:3000
 npm run build        # genera el instalador en dist/nsis-web/
 ```
 
-### Como se empaqueta
-
-El target es `nsis-web`, no `nsis`. En vez de un `.exe` de 131 MB produce dos
-artefactos, que se suben juntos al Release:
-
-| Archivo | Peso | Que es |
-|---|---|---|
-| `L4D2-Spray-Maker-Setup-x.x.x.exe` | ~0,7 MB | La cascara que descarga el resto |
-| `l4d2-spray-maker-x.x.x-x64.nsis.7z` | ~131 MB | El paquete con la app |
-
-La cascara saca la URL del paquete del bloque `publish` de package.json, asi que
-apunta sola al Release que toca. Si el `.7z` esta en la misma carpeta que el
-`.exe`, lo usa de ahi en vez de descargarlo: comodo para probar en local, pero
-hay que tenerlo en cuenta, porque una prueba hecha asi **no** comprueba la
-descarga.
-
-Lo que se descarga en total es lo mismo. Lo que cambia es que el boton de
-descarga entrega un archivo diminuto. El peso de verdad esta en Electron
-(~305 MB instalados) y en los binarios de FFmpeg (~139 MB).
+Los detalles de implementación —el formato VTF, por qué los 5 FPS no se pueden
+cambiar, cómo se empaqueta y los scripts de verificación— están en
+[TECNICO.md](TECNICO.md).
 
 ## Licencia
 
 MIT — ver [LICENSE](LICENSE). Copyright (c) 2026 RXDG2908.
 
-Los avisos de terceros (FFmpeg, Electron, vtf-js y marcas de Valve) estan en
-[NOTICE.md](NOTICE.md). Este proyecto no esta afiliado ni respaldado por Valve
+Los avisos de terceros (FFmpeg, Electron, vtf-js y marcas de Valve) están en
+[NOTICE.md](NOTICE.md). Este proyecto no está afiliado ni respaldado por Valve
 Corporation.
