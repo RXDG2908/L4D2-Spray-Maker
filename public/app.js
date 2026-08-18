@@ -696,18 +696,29 @@ const steamPath = $('steam-path');
 const manualForm = $('steam-manual-form');
 const manualInput = $('steam-manual-input');
 
+/**
+ * Con el juego encontrado la caja se queda en una linea, porque es un dato que
+ * se consulta una vez. Se despliega al pulsar "Cambiar", y se queda desplegada
+ * mientras dure la sesion para no esconderle la ruta a quien la esta ajustando.
+ */
+let gameBoxExpanded = false;
+
 /** Refleja en la interfaz donde quedo apuntando la app. */
 function renderGameLocation() {
   const found = state.steam?.found;
   steamBox.classList.remove('searching', 'found', 'missing');
   steamBox.classList.add(found ? 'found' : 'missing');
 
+  // Si no se encontro, no se compacta: ahi hay algo que resolver.
+  const compact = found && !gameBoxExpanded;
+  steamBox.classList.toggle('compact', compact);
+
   if (found) {
-    // Mostramos la carpeta del juego, que es lo que el usuario reconoce;
-    // las subcarpetas exactas las gestiona la app.
-    steamText.textContent = t(state.steam.source === 'manual'
-      ? 'steam.detectedManual'
-      : 'steam.detected');
+    steamText.textContent = compact
+      ? t('steam.ready')
+      // Mostramos la carpeta del juego, que es lo que el usuario reconoce;
+      // las subcarpetas exactas las gestiona la app.
+      : t(state.steam.source === 'manual' ? 'steam.detectedManual' : 'steam.detected');
     steamPath.hidden = false;
     steamPath.textContent = state.steam.gameRoot;
     $('steam-manual-hint').hidden = true;
@@ -721,8 +732,18 @@ function renderGameLocation() {
   $('steam-manual').hidden = false;
   $('steam-auto').textContent = t('steam.auto');
   $('steam-manual').textContent = t('steam.manual');
+
+  const toggle = $('steam-toggle');
+  toggle.hidden = !compact;
+  toggle.textContent = t('steam.change');
+
   setButtonsEnabled(!downloadBtn.disabled);
 }
+
+$('steam-toggle').addEventListener('click', () => {
+  gameBoxExpanded = true;
+  renderGameLocation();
+});
 
 async function detectSteam() {
   try {

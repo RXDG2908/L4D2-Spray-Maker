@@ -58,6 +58,8 @@ const TRANSLATIONS = {
     'action.installing': 'Instalando...',
     'action.generating': 'Generando spray...',
 
+    'steam.ready': 'Left 4 Dead 2 listo',
+    'steam.change': 'Cambiar',
     'steam.detected': 'Left 4 Dead 2 encontrado en:',
     'steam.detectedManual': 'Carpeta del juego elegida por ti:',
     'steam.notFound': 'No se encontró Left 4 Dead 2.',
@@ -188,6 +190,8 @@ const TRANSLATIONS = {
     'action.installing': 'Installing...',
     'action.generating': 'Generating spray...',
 
+    'steam.ready': 'Left 4 Dead 2 ready',
+    'steam.change': 'Change',
     'steam.detected': 'Left 4 Dead 2 found at:',
     'steam.detectedManual': 'Game folder you selected:',
     'steam.notFound': 'Left 4 Dead 2 was not found.',

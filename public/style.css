@@ -14,6 +14,17 @@
 
 * { box-sizing: border-box; }
 
+/**
+ * El atributo `hidden` tiene que ganar siempre.
+ *
+ * `hidden` aplica `display: none` desde la hoja del navegador, y cualquier
+ * regla propia con `display` la pisa. Como aqui se usan mucho `display: flex`
+ * y `hidden` a la vez, habia elementos marcados como ocultos que se seguian
+ * pintando: la barra de actualizacion, el formulario de ruta manual, la caja
+ * de vista previa y la fila de renombrar de cada spray.
+ */
+[hidden] { display: none !important; }
+
 body {
   margin: 0;
   min-height: 100vh;
@@ -738,4 +749,95 @@ h2 { margin: 0 0 6px; font-size: 1.05rem; }
   font-size: 0.7rem;
   color: var(--muted);
   overflow-wrap: anywhere;
+}
+
+/* ------------------------------------------------ area de trabajo --- */
+
+/**
+ * Dos columnas en pantallas anchas: a la izquierda lo que se manipula
+ * (archivo, frames, recorte) y a la derecha, fija, la que responde
+ * (previsualizador, opciones, botones).
+ *
+ * El motivo no es estetico: con un video cargado la pagina medía 2475 px,
+ * y los controles de tamaño y calidad quedaban a tres pantallas de scroll
+ * del previsualizador que cambian. Ahora se ven a la vez.
+ *
+ * Por debajo de 900 px se apila como siempre, que es lo que necesita el
+ * ancho minimo de la ventana (640).
+ */
+.workspace {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 900px) {
+  .wrap { max-width: 1080px; }
+
+  .workspace {
+    grid-template-columns: minmax(0, 1fr) 340px;
+    align-items: start;
+    gap: 22px;
+  }
+
+  /* La columna de resultado acompaña al scroll de la de trabajo. */
+  .col-result {
+    position: sticky;
+    top: 16px;
+  }
+
+  /* Sin esto la grilla de frames se estira y desborda su columna. */
+  .col-work { min-width: 0; }
+
+  .frames-grid { max-height: 260px; }
+}
+
+.col-work,
+.col-result {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+}
+
+/* Los margenes propios de cada seccion estorban dentro de una columna flex. */
+.col-work > *,
+.col-result > * { margin: 0; }
+
+/* -------------------------------------------- juego: chip compacto --- */
+
+/**
+ * Una vez encontrado el juego, la caja se reduce a una linea: es un dato que
+ * se mira una vez y ocupaba 115 px del sitio mas visible de la pantalla.
+ * Se despliega con "Cambiar", o sola si la deteccion falla.
+ */
+.steam-box.compact {
+  padding: 7px 12px;
+}
+
+.steam-box.compact #steam-path,
+.steam-box.compact .steam-actions,
+.steam-box.compact #steam-manual-hint {
+  display: none;
+}
+
+.steam-box.compact .steam-head {
+  flex-wrap: nowrap;
+}
+
+.steam-box.compact #steam-text {
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+/* Punto verde: se ve el estado sin leer nada. */
+.steam-box.compact #steam-text::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  flex-shrink: 0;
 }
