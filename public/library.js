@@ -1,4 +1,5 @@
 import { t } from './i18n.js';
+import { getPref, setPref } from './prefs.js';
 
 /**
  * Visualizador de los sprays que ya estan en la carpeta del juego.
@@ -366,7 +367,12 @@ function buildCard(spray) {
       // Si no se puede consultar, igual se avisa; el borrado dira que paso.
     }
 
-    confirmText.textContent = t('library.deleteConfirm', { name: spray.name, n: files.length });
+    // En la app de escritorio los archivos van a la papelera y se pueden
+    // recuperar; en el navegador el borrado es definitivo. El aviso lo dice.
+    const key = window.sprayApp?.isDesktop
+      ? 'library.deleteConfirmTrash'
+      : 'library.deleteConfirm';
+    confirmText.textContent = t(key, { name: spray.name, n: files.length });
     for (const file of files) {
       const item = document.createElement('li');
       item.textContent = file;
@@ -433,13 +439,11 @@ export async function refreshLibrary() {
 
 /* ------------------------------------------------------------------ init --- */
 
-const OPEN_KEY = 'l4d2spray.libraryOpen';
-
 function setOpen(open) {
   body.hidden = !open;
   toggleBtn.setAttribute('aria-expanded', String(open));
   section.classList.toggle('open', open);
-  localStorage.setItem(OPEN_KEY, open ? '1' : '0');
+  setPref('libraryOpen', open);
   // Estando cerrado no se mide nada, asi que al abrir hay que mirar de nuevo.
   if (open) loadVisibleThumbs();
 }
@@ -455,6 +459,6 @@ export function setupLibrary(options = {}) {
     if (dirs?.custom) window.sprayApp?.openFolder(dirs.custom);
   });
 
-  setOpen(localStorage.getItem(OPEN_KEY) === '1');
+  setOpen(getPref('libraryOpen', false) === true);
   refreshLibrary();
 }

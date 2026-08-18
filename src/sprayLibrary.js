@@ -191,6 +191,20 @@ const SPRAY_PIECES = [
   { dir: 'sprays', exts: ['.vtf', '.tga', '.bmp', '.jpg', '.jpeg', '.png'] },
 ];
 
+/**
+ * Como se quita un archivo del disco.
+ *
+ * Por defecto se borra sin mas, que es lo unico que puede hacer el servidor a
+ * secas. La app de escritorio lo reemplaza por la papelera de Windows (ver
+ * electron/main.js): borrar un spray es de las pocas cosas de esta app que
+ * destruyen trabajo del usuario, y conviene que se pueda deshacer.
+ */
+let removeFile = (file) => unlink(file);
+
+export function setFileRemover(fn) {
+  removeFile = typeof fn === 'function' ? fn : ((file) => unlink(file));
+}
+
 /** Archivos que existen de verdad para un spray dado. */
 function collectSprayFiles(dirs, name) {
   const files = [];
@@ -308,7 +322,7 @@ export async function deleteSpray(location, name) {
   const failed = [];
   for (const piece of collectSprayFiles(resolved.dirs, real)) {
     try {
-      await unlink(piece.file);
+      await removeFile(piece.file);
       removed.push(piece.file);
     } catch {
       // Suele ser que el juego este abierto y tenga el archivo tomado.

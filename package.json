@@ -1,6 +1,6 @@
 {
   "name": "l4d2-spray-maker",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": false,
   "type": "module",
   "description": "Crea sprays estaticos y animados (.vtf) para Left 4 Dead 2 desde fotos, videos y GIF, y los instala directamente en el juego.",

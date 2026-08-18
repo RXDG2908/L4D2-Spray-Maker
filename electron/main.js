@@ -20,6 +20,12 @@ function send(channel, payload) {
 }
 
 async function createWindow() {
+  // Borrar un spray manda sus archivos a la papelera en vez de destruirlos.
+  // Solo la app de escritorio puede hacerlo: el servidor a secas no tiene
+  // shell.trashItem, y ahi el borrado sigue siendo definitivo.
+  const { setFileRemover } = await import('../src/sprayLibrary.js');
+  setFileRemover((target) => shell.trashItem(target));
+
   const { startServer } = await import('../server.js');
   // Puerto 0: el sistema asigna uno libre y evitamos chocar con otros programas.
   const { server, port } = await startServer({ port: 0 });

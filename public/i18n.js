@@ -1,3 +1,5 @@
+import { setPref } from './prefs.js';
+
 const TRANSLATIONS = {
   es: {
     'app.title': 'L4D2 Spray Maker',
@@ -83,6 +85,7 @@ const TRANSLATIONS = {
     'library.renamed': 'Renombrado a "{name}". Si lo tenías puesto, vuelve a activarlo con el comando nuevo.',
     'library.delete': 'Borrar',
     'library.deleteConfirm': '¿Borrar este spray? Se quitan {n} archivos y no se puede deshacer:',
+    'library.deleteConfirmTrash': '¿Borrar este spray? Sus {n} archivos se van a la papelera de Windows, así que puedes recuperarlos desde ahí:',
     'library.deleteYes': 'Sí, borrar',
     'library.deleteNo': 'Cancelar',
     'library.deleted': 'Se borró "{name}" ({n} archivos).',
@@ -212,6 +215,7 @@ const TRANSLATIONS = {
     'library.renamed': 'Renamed to "{name}". If it was your active spray, set it again with the new command.',
     'library.delete': 'Delete',
     'library.deleteConfirm': 'Delete this spray? {n} files will be removed and this cannot be undone:',
+    'library.deleteConfirmTrash': 'Delete this spray? Its {n} files go to the Windows Recycle Bin, so you can restore them from there:',
     'library.deleteYes': 'Yes, delete',
     'library.deleteNo': 'Cancel',
     'library.deleted': 'Deleted "{name}" ({n} files).',
@@ -258,15 +262,23 @@ const TRANSLATIONS = {
   },
 };
 
-let currentLang = localStorage.getItem('l4d2spray.lang') || 'es';
+// El idioma se guarda en el perfil del usuario, no en localStorage: el puerto
+// del servidor embebido cambia en cada arranque y localStorage se separa por
+// origen, asi que ahi la eleccion no sobrevivia a cerrar la app.
+let currentLang = 'es';
 
 export function getLang() {
   return currentLang;
 }
 
+/** Fija el idioma leido de las preferencias, sin volver a guardarlo. */
+export function initLang(lang) {
+  currentLang = TRANSLATIONS[lang] ? lang : 'es';
+}
+
 export function setLang(lang) {
   currentLang = TRANSLATIONS[lang] ? lang : 'es';
-  localStorage.setItem('l4d2spray.lang', currentLang);
+  setPref('lang', currentLang);
   applyTranslations();
 }
 

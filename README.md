@@ -64,7 +64,10 @@ usarlo aunque el `.vtf` esté ahí.
   vieja, después de renombrar hay que volver a activarlo con el comando nuevo,
   que aparece en el aviso.
 - **Borrar** — antes de borrar nada se listan los archivos exactos que se van a
-  quitar (suelen ser cuatro, repartidos en tres carpetas). No se puede deshacer.
+  quitar (suelen ser cuatro, repartidos en tres carpetas). En la app de
+  escritorio van a la **papelera de Windows**, así que un borrado por error se
+  puede deshacer desde ahí. Ejecutando solo el servidor con `npm start` no hay
+  papelera disponible y el borrado sí es definitivo; el aviso lo dice.
 - **Copiar comando** — deja el `cl_logofile` listo para pegar en la consola.
 
 La vista previa se lee del propio `.vtf`, aprovechando la cadena de mipmaps que
@@ -197,6 +200,16 @@ Genera un VTF en memoria, lo decodifica y valida dimensiones y cantidad de frame
 ```bash
 node scripts/test-spray-library.mjs
 ```
+
+```bash
+node scripts/test-prefs.mjs
+```
+
+Comprueba que las preferencias (idioma, panel abierto) sobreviven a cerrar la
+app. Importa porque el servidor embebido arranca en un puerto libre distinto
+cada vez y `localStorage` se separa por origen, que incluye el puerto: guardadas
+ahí se perdían en cada arranque y el idioma volvía a español. Ahora viven en el
+perfil del usuario, junto a la ruta del juego.
 
 Prueba el panel de sprays instalados: listar, renombrar y borrar. Monta una
 instalación falsa del juego en una carpeta temporal y también mueve el "home"

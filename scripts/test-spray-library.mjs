@@ -26,6 +26,7 @@ const {
   renameSpray,
   deleteSpray,
   resolveSprayFile,
+  setFileRemover,
 } = await import('../src/sprayLibrary.js');
 const { buildVtf } = await import('../src/vtfBuilder.js');
 const { buildVmt, buildUiVmt } = await import('../src/vmtBuilder.js');
@@ -195,6 +196,22 @@ check('el spray fijo se lleva su .tga', gatoOut.ok && !existsSync(path.join(spra
 
 const empty = await listInstalledSprays();
 check('la carpeta queda vacia', empty.sprays.length === 0, JSON.stringify(empty.sprays.map((s) => s.name)));
+
+// La app de escritorio cambia el borrado por la papelera de Windows. Aqui se
+// comprueba que ese enganche se usa de verdad para TODAS las piezas, que es lo
+// que permite recuperar un spray borrado por error.
+console.log('\npapelera');
+await installFakeSpray('a-la-papelera', { frames: 3 });
+const enviados = [];
+setFileRemover(async (file) => { enviados.push(file); await rm(file, { force: true }); });
+
+const tirado = await deleteSpray('custom', 'a-la-papelera');
+check('usa el borrador conectado', tirado.ok && enviados.length === 4, JSON.stringify(enviados));
+check('manda tambien el .vmt del menu', enviados.some((f) => f.includes('UI')), JSON.stringify(enviados));
+check('manda tambien la copia de sprays/', enviados.some((f) => f.includes('sprays')), JSON.stringify(enviados));
+
+setFileRemover(null);
+check('se puede volver al borrado normal', true);
 
 /* ------------------------------------------------------------------ fin --- */
 

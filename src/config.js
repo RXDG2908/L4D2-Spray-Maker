@@ -39,3 +39,34 @@ export function setManualGamePath(gamePath) {
   else delete data.gamePath;
   return write(data);
 }
+
+/**
+ * Preferencias de la interfaz (idioma, panel abierto...).
+ *
+ * Van aqui y no en localStorage del navegador por una razon concreta: el
+ * servidor embebido arranca en un puerto libre distinto en cada apertura, y
+ * localStorage se separa por origen, que incluye el puerto. Guardadas ahi se
+ * perdian en cada arranque de la app de escritorio, asi que el idioma elegido
+ * volvia a espanol cada vez.
+ */
+const UI_KEYS = new Set(['lang', 'libraryOpen']);
+
+export function getUiPrefs() {
+  const stored = read().ui;
+  if (!stored || typeof stored !== 'object') return {};
+
+  const clean = {};
+  for (const [key, value] of Object.entries(stored)) {
+    if (UI_KEYS.has(key)) clean[key] = value;
+  }
+  return clean;
+}
+
+export function setUiPref(key, value) {
+  if (!UI_KEYS.has(key)) return false;
+
+  const data = read();
+  if (!data.ui || typeof data.ui !== 'object') data.ui = {};
+  data.ui[key] = value;
+  return write(data);
+}

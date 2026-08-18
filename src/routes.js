@@ -22,6 +22,7 @@ import {
 } from './sprayLibrary.js';
 import { readVtfFrames } from './vtfReader.js';
 import { sanitizeName } from './sprayName.js';
+import { getUiPrefs, setUiPref } from './config.js';
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -129,6 +130,25 @@ router.get('/api/sprays', async (_req, res) => {
     console.error(err);
     res.json({ names: [] });
   }
+});
+
+/* ---------------------------------------------------------- preferencias --- */
+
+/**
+ * Preferencias de la interfaz.
+ *
+ * Se guardan en el servidor y no en localStorage porque el puerto del servidor
+ * embebido cambia en cada arranque, y localStorage se separa por origen: el
+ * idioma elegido se perdia cada vez que se cerraba la app.
+ */
+router.get('/api/prefs', (_req, res) => {
+  res.json(getUiPrefs());
+});
+
+router.post('/api/prefs', express.json(), (req, res) => {
+  const entries = Object.entries(req.body ?? {});
+  for (const [key, value] of entries) setUiPref(key, value);
+  res.json(getUiPrefs());
 });
 
 /* --------------------------------------------------- sprays instalados --- */

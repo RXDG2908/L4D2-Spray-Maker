@@ -1,4 +1,5 @@
-import { t, setLang, getLang, applyTranslations } from './i18n.js';
+import { t, setLang, getLang, initLang, applyTranslations } from './i18n.js';
+import { loadPrefs, getPref } from './prefs.js';
 import { Cropper } from './cropper.js';
 import { setupUpdater } from './updater.js';
 import { setupLibrary, refreshLibrary } from './library.js';
@@ -832,6 +833,12 @@ document.querySelectorAll('.mode-btn').forEach((btn) => {
 });
 
 /* ------------------------------------------------------------------ init --- */
+
+// Las preferencias se leen ANTES de pintar: el idioma vive en el perfil del
+// usuario, no en localStorage, porque el puerto del servidor embebido cambia en
+// cada arranque y localStorage se separa por origen.
+await loadPrefs();
+initLang(getPref('lang', 'es'));
 
 $('lang-select').value = getLang();
 applyTranslations();
