@@ -74,13 +74,12 @@
     "win": {
       "target": [
         {
-          "target": "nsis",
+          "target": "nsis-web",
           "arch": [
             "x64"
           ]
         }
-      ],
-      "artifactName": "L4D2-Spray-Maker-Setup-${version}.${ext}"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -88,6 +87,9 @@
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "L4D2 Spray Maker"
+    },
+    "nsisWeb": {
+      "artifactName": "L4D2-Spray-Maker-Setup-${version}.${ext}"
     }
   }
 }
