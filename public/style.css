@@ -984,3 +984,7 @@ button:active:not(:disabled) { transform: translateY(1px); }
   font-size: var(--fs-xs);
   color: var(--muted);
 }
+
+/* El boton existe sobre todo para el teclado: con el raton se pulsa la zona
+   entera, pero sin el no habia forma de llegar al selector de archivo. */
+#dropzone-pick { margin-top: 14px; }

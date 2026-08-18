@@ -7,11 +7,11 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="update-bar" class="update-bar" hidden>
+  <div id="update-bar" class="update-bar" role="status" aria-live="polite" hidden>
     <span id="update-text"></span>
     <div class="update-actions">
       <button type="button" id="update-action" class="mini-btn" hidden></button>
-      <button type="button" id="update-dismiss" class="update-close" title="X">&times;</button>
+      <button type="button" id="update-dismiss" class="update-close" data-i18n-aria="update.dismiss">&times;</button>
     </div>
   </div>
 
@@ -85,11 +85,12 @@
           </svg>
           <p id="dropzone-label" data-i18n="drop.image"></p>
           <p class="dropzone-formats" id="dropzone-formats"></p>
+          <button type="button" id="dropzone-pick" class="mini-btn" data-i18n="drop.pick"></button>
         </div>
         <div id="preview-wrap" class="preview-wrap" hidden>
           <img id="preview-img" alt="" hidden />
           <video id="preview-video" muted loop autoplay playsinline hidden></video>
-          <button type="button" id="clear-file" class="clear-btn" title="X">&times;</button>
+          <button type="button" id="clear-file" class="clear-btn" data-i18n-aria="drop.remove">&times;</button>
         </div>
       </div>
 
@@ -170,7 +171,7 @@
         <button type="button" id="install-btn" class="btn btn-primary" disabled data-i18n="action.install"></button>
       </div>
 
-      <div id="status" class="status" hidden></div>
+      <div id="status" class="status" role="status" aria-live="polite" hidden></div>
 
       </aside>
     </div>

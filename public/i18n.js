@@ -10,7 +10,8 @@ const TRANSLATIONS = {
 
     'drop.image': 'Arrastra una foto aquí, o haz clic para elegir un archivo',
     'drop.video': 'Arrastra un video o GIF aquí, o haz clic para elegir un archivo',
-    'drop.remove': 'Quitar',
+    'drop.remove': 'Quitar el archivo',
+    'drop.pick': 'Elegir archivo',
     'drop.formats.image': 'PNG, JPG, GIF, WebP, BMP, TGA o TIFF',
     'drop.formats.video': 'MP4, WebM, MOV, AVI, MKV o GIF',
 
@@ -128,6 +129,7 @@ const TRANSLATIONS = {
     'update.ready': 'La versión {version} está lista para instalarse.',
     'update.restart': 'Reiniciar e instalar',
     'update.check': 'Buscar actualizaciones',
+    'update.dismiss': 'Cerrar el aviso',
     'update.checking': 'Buscando actualizaciones...',
     'update.upToDate': 'Ya tienes la última versión.',
     'update.failed': 'No se pudo comprobar si hay actualizaciones. Revisa tu conexión.',
@@ -144,7 +146,8 @@ const TRANSLATIONS = {
 
     'drop.image': 'Drag a photo here, or click to pick a file',
     'drop.video': 'Drag a video or GIF here, or click to pick a file',
-    'drop.remove': 'Remove',
+    'drop.remove': 'Remove the file',
+    'drop.pick': 'Choose file',
     'drop.formats.image': 'PNG, JPG, GIF, WebP, BMP, TGA or TIFF',
     'drop.formats.video': 'MP4, WebM, MOV, AVI, MKV or GIF',
 
@@ -262,6 +265,7 @@ const TRANSLATIONS = {
     'update.ready': 'Version {version} is ready to install.',
     'update.restart': 'Restart and install',
     'update.check': 'Check for updates',
+    'update.dismiss': 'Dismiss the notice',
     'update.checking': 'Checking for updates...',
     'update.upToDate': 'You already have the latest version.',
     'update.failed': 'Could not check for updates. Check your connection.',
@@ -309,6 +313,10 @@ export function applyTranslations() {
   });
   document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
     el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  // Botones que solo muestran un simbolo: sin esto un lector de pantalla lee "X".
+  document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+    el.setAttribute('aria-label', t(el.dataset.i18nAria));
   });
 
   document.dispatchEvent(new CustomEvent('languagechange'));

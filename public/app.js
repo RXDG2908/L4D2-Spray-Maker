@@ -159,6 +159,16 @@ dropzone.addEventListener('click', (e) => {
   fileInput.click();
 });
 
+/**
+ * Soltar un archivo fuera de la zona hacia que la ventana navegase hasta el, y
+ * la app desaparecia: sin barra de menu a la vista, la unica salida era
+ * cerrarla. Basta con cancelar el comportamiento por defecto en toda la
+ * ventana; el manejador de la zona corre antes y sigue funcionando igual.
+ */
+for (const evento of ['dragover', 'drop']) {
+  window.addEventListener(evento, (e) => e.preventDefault());
+}
+
 dropzone.addEventListener('dragover', (e) => {
   e.preventDefault();
   dropzone.classList.add('drag-over');
